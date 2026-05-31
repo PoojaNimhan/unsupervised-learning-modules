@@ -1,0 +1,6 @@
+property_name,living_area_unit,price_unit,intended_pattern,is_outlier
+Immobilie A,1.5,2.4,links,False
+Immobilie B,2.6,3.0,links,False
+Immobilie C,4.1,4.8,mitte,False
+Immobilie D,5.3,4.9,mitte,False
+Immobilie E,6.8,6.2,rechts,False

@@ -1,0 +1,36 @@
+title: Interaktives Clustering-Applet
+intro: >
+  Willkommen zu einer interaktiven Lernumgebung rund um Clusterbildung,
+  Aehnlichkeiten in Daten und unueberwachtes Lernen.
+learning_journey:
+  heading: Was dich erwartet
+  items:
+    - Du startest mit alltaeglichen Beispielen zum Sortieren und Vergleichen.
+    - Danach erkundest du Merkmale, Koordinaten und sichtbare Gruppen in Daten.
+    - Anschliessend lernst du K-Means Schritt fuer Schritt kennen.
+    - Zum Schluss vergleichst du verschiedene Gruppierungsarten in der Werbeagentur.
+usage:
+  heading: So benutzt du diese App
+  body: >
+    Arbeite die Module in deinem Tempo durch. Beobachte zuerst die Beispiele,
+    probiere dann Interaktionen aus und lies die kurzen Erklaerungen direkt an
+    den passenden Stellen.
+advanced_hint:
+  heading: Fuer Fortgeschrittene
+  body: >
+    Du brauchst kein Vorwissen zu maschinellem Lernen. Wenn du schon gern mit
+    Python arbeitest, findest du spaeter einen leichten Einstieg in weiterfuehrende
+    Beispiele.
+module_overview:
+  heading: Lernreise durch die Module
+  modules:
+    - title: Start
+      summary: Orientierung, Einstieg und Ueberblick ueber die Lernreise.
+    - title: Modul 1
+      summary: Unueberwachtes Lernen mit alltaeglichen Sortierideen verstehen.
+    - title: Modul 2
+      summary: Immobiliendaten aus verschiedenen Blickwinkeln kartografieren und vergleichen.
+    - title: Modul 3
+      summary: K-Means Schritt fuer Schritt im Schulhofbeispiel nachvollziehen.
+    - title: Modul 4
+      summary: Verschiedene Arten der Gruppierung in der Werbeagentur vorbereiten.

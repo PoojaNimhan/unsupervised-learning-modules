@@ -1,0 +1,11 @@
+listing_id,display_name,area_sqm,rooms,condition_label,condition_score,price_eur,description,is_outlier
+1,Anzeige 1,40,1,Gut,2,180000,"Studio, moderne Küche",False
+2,Anzeige 2,150,5,Gut,2,620000,"Einfamilienhaus, Garten",False
+3,Anzeige 3,35,1,Gut,2,200000,"Studio in der Nähe der U-Bahn",False
+4,Anzeige 4,160,6,Gut,2,680000,"Einfamilienhaus mit Garage",False
+5,Anzeige 5,400,10,Luxus,3,3200000,"Villa mit Pool",False
+6,Anzeige 6,45,1,Gut,2,210000,"Studio mit Balkon",False
+7,Anzeige 7,140,5,Gut,2,590000,"Einfamilienhaus, ruhige Straße",False
+8,Anzeige 8,450,12,Luxus,3,3900000,"Herrenhaus mit Weinkeller",False
+9,Anzeige 9,380,2,Einfach,1,850000,"Ruine, renovierungsbedürftig",True
+10,Anzeige 10,420,11,Luxus,3,4200000,"Herrenhaus mit eigenem Park",False

@@ -1,0 +1,32 @@
+{
+  "name": "clustering-applet-native",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4173",
+    "dev:analytics": "vite --host 127.0.0.1 --port 5174 --config analytics-dashboard/vite.config.js",
+    "dev:with-analytics": "VITE_SESSION_ANALYTICS_ENABLED=true npm run dev",
+    "generate:runtime": "node scripts/generate-runtime-assets.mjs",
+    "build": "npm run generate:runtime && vite build",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:status": "supabase status",
+    "analytics:functions": "supabase functions serve --env-file supabase/.env.local",
+    "test:js": "vitest run",
+    "test:analytics": "vitest run tests-js/telemetry*.test.js tests-js/analytics-dashboard.test.js",
+    "test": "npm run generate:runtime && npm run test:js && vite build"
+  },
+  "dependencies": {
+    "csv-parse": "^5.5.6",
+    "vue": "^3.5.13",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^25.0.1",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4"
+  }
+}

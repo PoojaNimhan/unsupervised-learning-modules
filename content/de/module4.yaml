@@ -1,0 +1,348 @@
+title: "Modul 4: Die Werbeagentur - Verschiedene Moeglichkeiten der Gruppierung"
+intro: >
+  Nach K-Means wird nun sichtbar, dass nicht jedes Gruppierungsproblem mit
+  derselben Regel geloest werden kann. Manche Anzeigen liegen zwischen zwei
+  Zielgruppen, manche wachsen stufenweise zu Familien zusammen, und manche
+  bilden eher Ketten als runde Wolken.
+exploration:
+  heading: Erkundung
+  scenario_heading: "Das Szenario:"
+  scenario: >
+    Stell dir vor, du betrittst eine geschäftige Werbeagentur, deren Wände mit
+    bunten Kampagnenplakaten bedeckt sind und deren Whiteboards voller Ideen
+    stehen. Das Team plant ein großes datengestütztes Marketingexperiment, und
+    du bist gerade als ihr „Datendetektiv“ eingestiegen. Deine Mission:
+    herauszufinden, wie man Anzeigen intelligenter und flexibler gruppieren
+    kann.
+  scenario_followup: >
+    Traditionell sortieren Werbetreibende ihre Inhalte in strenge Kategorien:
+    Tech-Anzeigen, Modeanzeigen, Lifestyle-Anzeigen und so weiter. Aber das
+    echte Leben ist nicht so ordentlich, oder? Manchmal passt eine Anzeige nicht
+    perfekt in eine einzige Schublade. Eine Smartwatch-Anzeige zum Beispiel:
+    Ist sie ein Tech-Produkt oder ein Modeaccessoire? Die Antwort lautet…
+    beides!
+  interactive_heading: "Das interaktive Szenario:"
+  interactive_intro: >
+    Um diese Idee zu erkunden, experimentiere mit einer interaktiven Karte der
+    Werbepräferenzen, die mit Streamlit erstellt wurde. Stellen Sie sich eine
+    digitale Leinwand mit zwei Hauptbereichen vor: eine Welt, die von
+    Technikbegeisterten beherrscht wird (die X-Achse), und eine andere, die von
+    Modefans beherrscht wird (die Y-Achse). Jede Anzeige im Datensatz kann
+    anhand von zwei Werten dargestellt werden: wie sehr sie Technikfans anspricht
+    (X) und wie sehr sie Stilbewusste anspricht (Y).
+  dataset_table_heading: "Hier ist die Auswahl an Anzeigen, mit denen du arbeiten wirst:"
+  dataset_table_headers:
+    - Ad ID
+    - Beschreibung
+    - Technikinteresse (X)
+    - Interesse an Mode (Y)
+    - Kategorie
+  dataset_table_rows:
+    - ["Ad 1", "Make-up-Tutorial", "18", "88", "Gruppe A (Gelb)"]
+    - ["Ad 2", "Fashion-Week-App", "22", "82", "Gruppe A (Gelb)"]
+    - ["Ad 3", "Minecraft-Game App", "92", "12", "Gruppe B (Blau)"]
+    - ["Ad 4", "Putzroboter", "88", "18", "Gruppe B (Blau)"]
+    - ["Hybrid", "Smartwatch-Anzeige", "55", "50", "Ungewiss"]
+  dataset_observation: >
+    Auf den ersten Blick scheinen die Gruppen klar zu sein: Auf der einen Seite
+    gruppieren sich die gelb Anzeigen (Mode + Schönheit), auf der anderen die
+    blauen (Technologie + Tools). Doch genau in der Mitte befindet sich die
+    Smartwatch-Anzeige, perfekt ausbalanciert, weder rein technologisch noch
+    rein modisch.
+  experiment_heading: "Das Experiment"
+  experiment_intro: >
+    In dieser Übung passt du die Eigenschaften der Smartwatch-Anzeige mithilfe
+    des Schiebereglers „Targeting Focus“ an. Wenn Sie ihn in Richtung „Tech“
+    verschieben, sehen Sie, wie die Ähnlichkeit mit Gruppe B (blau) zunimmt.
+    Verschieben Sie ihn in Richtung „Style“, ähnelt die Anzeige eher Gruppe A
+    (gelb).
+  experiment_membership_intro: >
+    Anstatt plötzlich von einer Kategorie in die andere zu springen, ändern sich
+    die Zugehörigkeitswerte schrittweise. Möglicherweise sehen Sie etwa
+    Folgendes:
+  experiment_membership_examples:
+    - 60 % Tech (Gruppe B)
+    - 40 % Mode (Gruppe A)
+  experiment_summary: >
+    Dieser kontinuierliche Zugehörigkeitsbereich macht Fuzzy Clustering so
+    leistungsstark. Er spiegelt wider, wie die Dinge im modernen Marketing
+    wirklich funktionieren: Nichts ist rein das eine oder das andere. Anzeigen
+    befinden sich, genau wie Menschen, oft in der Grauzone zwischen den
+    Kategorien.
+  big_idea_heading: "Die große Idee"
+  big_idea_paragraphs:
+    - >
+      Was lernen wir also daraus? In der Welt des Fuzzy-Clusterings darf jeder
+      Datenpunkt, jede Anzeige, jedes Produkt und jede Person komplex sein. Man
+      muss sich nicht für nur eine einzige Kategorie entscheiden. Stattdessen
+      misst das System anhand der genauen Position im Datenraum, wie stark man
+      zu jeder Gruppe gehört.
+    - >
+      Es ist ein bisschen so, als würde man seine Persönlichkeit anhand eines
+      Quiz ermitteln: Vielleicht bist du zu 70 % „Abenteurer“, zu 20 % „Denker“
+      und zu 10 % „Künstler“. Keine starren Grenzen, nur verschmolzene
+      Identitäten.
+    - >
+      Am Ende dieses Abschnitts sollten die Schüler verstehen, dass Soft
+      Grouping den Weg zu einer realistischeren und flexibleren Art des
+      Datenverständnisses ebnet, eine Brücke zwischen Kategorien, auf der
+      Kreativität und Mathematik aufeinandertreffen.
+  interactive:
+    heading: "Interaktive Karte: weiche Zugehoerigkeit"
+    intro: >
+      Mit dem Regler verschiebst du den Targeting-Fokus der Smartwatch. Je
+      weiter der Fokus nach rechts wandert, desto staerker spricht die Anzeige
+      Technikfans an. Gleichzeitig sinkt ihre Naehe zur Stil-Gruppe.
+    slider_label: "Targeting-Fokus der Smartwatch"
+    slider_left: "mehr Stil"
+    slider_right: "mehr Tech"
+    membership_heading: "Aktuelle Zugehoerigkeit"
+    tech_label: "Tech-Gruppe"
+    style_label: "Style-Gruppe"
+    explanation_template: >
+      Bei diesem Fokus liegt die Smartwatch bei {tech}% Tech und {style}% Style.
+      Die Zugehoerigkeit aendert sich schrittweise statt sprunghaft.
+    plot_caption: >
+      Die festen Anzeigen bleiben an ihren Orten. Nur die Smartwatch wird
+      entlang des Spannungsfelds zwischen beiden Gruppen verschoben.
+structuring:
+  heading: Strukturierung
+  intro_paragraphs:
+    - >
+      Den Stammbaum der Anzeigen erstellen: Nachdem du die unscharfe Welt des
+      Soft-Clusterings gemeistert hast, ist es an der Zeit, ein wenig höher zu
+      klettern – im wahrsten Sinne des Wortes. Stellen Sie sich nun vor, Sie
+      stehen vor einem riesigen Whiteboard im Kreativlabor der Werbeagentur.
+      Darauf sind zehn Anzeigen wie bunte Puzzleteile angeheftet. Ihre neue
+      Aufgabe: Finden Sie heraus, wie sie alle miteinander verbunden sind.
+    - >
+      Traditionell würden Marketingfachleute diese Anzeigen vielleicht einfach
+      nach Intuition oder Bauchgefühl in zufällige Ordner einordnen – „leg die
+      Schuhanzeige zu den Sportartikeln“, „die Hautpflegeanzeige gehört zu
+      Beauty“. Das nennt man Flat Clustering. Es ist einfach und schnell: Man
+      sortiert die Elemente in feste Gruppen, und das war’s.
+    - >
+      Aber was, wenn mehr dahintersteckt? Was, wenn diese Anzeigen Verbindungen
+      innerhalb von Verbindungen haben – wie ein Stammbaum verwandter
+      Interessen?
+  scenario_heading: "Das Szenario"
+  ad_list_intro: "Hier sind die zehn Anzeigen, die auf dem Tisch liegen:"
+  ad_list:
+    - Anzeige für Sportschuhe
+    - Anzeige für Sportgetränke
+    - Anzeige für eine Fitnessstudio-Mitgliedschaft
+    - Anzeige für Luxusparfüm
+    - Anzeige für Hautpflegeprodukte
+    - Anzeige für eine Altersvorsorge
+    - Anzeige für eine Pauschalreise
+    - Anzeige für eine Spielkonsole
+    - Anzeige für Kinderspielzeug
+    - Anzeige für einen Business-Laptop
+  scenario_paragraphs:
+    - >
+      Die Anzeigen für Turnschuhe, Sportgetränke und Fitnessstudio-Mitgliedschaften
+      gehören eindeutig zusammen, da es bei allen um Fitness und Bewegung geht.
+      Die Anzeigen für Parfüm und Hautpflege könnten einen Beauty-Cluster
+      bilden. Die Anzeigen für Business-Laptops und Altersvorsorge richten sich
+      an Berufstätige.
+    - >
+      Aber wie lassen sich diese Zusammenhänge systematisch visualisieren und
+      wie lässt sich erkennen, wie kleine Gruppen zu größeren verschmelzen? Hier
+      kommt das hierarchische Clustering ins Spiel.
+  hierarchy_heading: "Den Baum erkennen: Verschachtelte Verbindungen"
+  hierarchy_paragraphs:
+    - >
+      Beim hierarchischen Clustering beginnt jedes Element als einzelner Punkt.
+      Schritt für Schritt werden ähnliche Elemente zu Gruppen zusammengefasst.
+      Diese Gruppen werden anschließend weiter zusammengeführt, bis am Ende eine
+      große Gesamtgruppe entsteht.
+    - >
+      Diese Struktur lässt sich als Stammbaum darstellen (fachsprachlich:
+      Dendrogramm). Unten steht jedes Blatt für ein einzelnes Element; je weiter
+      man nach oben geht, desto stärker werden Elemente und Gruppen
+      zusammengefasst. Dadurch wird sichtbar, welche Elemente einander ähnlich
+      sind.
+  hierarchy_points:
+    - Statt vieler einzelner Gruppen entsteht so schrittweise eine hierarchische Struktur. Kleine Gruppen werden zu größeren zusammengefasst, bis schließlich alle Elemente in einer gemeinsamen Struktur verbunden sind.
+    - Diese schrittweise Zusammenführung zeigt nicht nur, welche Elemente ähnlich sind, sondern auch, wie stark ihre Ähnlichkeit ist, je früher zwei Elemente zusammengeführt werden, desto ähnlicher sind sie sich.
+  strategic_cut_heading: "Der strategische Schnitt"
+  strategic_cut_paragraphs:
+    - >
+      Hier ist der Trick: Die Anzahl der Cluster, die du am Ende erhältst, hängt
+      davon ab, wo du die Trennlinie im Dendrogramm ziehst. Wenn Sie die Linie
+      hoch ziehen, nahe der Spitze (näher am Stamm des Baumes), werden weniger
+      Zweige abgeschnitten, sodass vielleicht nur zwei oder drei große Cluster
+      übrig bleiben. Das ist nützlich für breit angelegte Kampagnen, die sich an
+      Zielgruppen wie Technikfans oder Lifestyle-Begeisterte im Allgemeinen
+      richten. Ziehe die Linie jedoch tiefer, nahe an den kleineren Ästen, und
+      du erhältst viele detaillierte Gruppen, vielleicht fünf, sechs oder mehr.
+      Das ist perfekt für eine spezialisierte Zielgruppenansprache,
+      beispielsweise wenn du dich auf Laufbegeisterte konzentrierst, anstatt auf
+      alle, die einfach nur gerne aktiv sind.
+    - >
+      (Scipy.cluster.hierarchy wird diese Struktur in Jupyter Notebook
+      implementieren. Der gesamte Wald der Anzeigenbeziehungen wird als
+      Dendrogramm dargestellt. Wenn Sie eine horizontale Linie mit einem
+      Schieberegler entlang des Baums bewegen, können Sie in Echtzeit beobachten,
+      wie sich Cluster aufteilen oder zusammenfügen.
+    - >
+      Der Wald verdichtet sich und Anzeigen verschmelzen zu größeren Familien,
+      wenn die Linie nach oben wandert. Schieben Sie sie nach unten, und der Wald
+      treibt kleine Zweige aus, die die dynamischen Mikro-Communities der
+      Werbung zeigen).
+  big_picture_heading: "Das große Ganze"
+  big_picture_paragraphs:
+    - >
+      Am Ende dieser Untersuchung wirst du erkennen, dass es beim hierarchischen
+      Clustering vor allem um die Perspektive geht. Es zeigt dir nicht nur, was
+      zusammengehört, sondern auch, wie eng die Dinge miteinander verbunden
+      sind. Du gruppierst nicht nur Anzeigen, sondern deckst die verschiedenen
+      Ebenen menschlichen Interesses auf, die sich dahinter verbergen.
+    - >
+      Sowohl im Marketing als auch in der Datenwissenschaft hilft dir dieser
+      Ansatz zu erkennen, dass Zielgruppen keine flachen Listen sind. Sie sind
+      strukturiert, nuanciert, vielschichtig und voller verborgener Beziehungen,
+      die darauf warten, entdeckt zu werden.
+  interactive:
+    heading: "Interaktive Schnittlinie"
+    intro: >
+      Der Regler unten simuliert die Hoehe einer Schnittlinie im Baum. Ein
+      niedriger Schnitt laesst viele kleine Gruppen stehen. Ein hoher Schnitt
+      fuehrt mehrere Teilfamilien zu groesseren Clustern zusammen.
+    slider_label: "Schnitthoehe im Anzeigenbaum"
+    cluster_count_label: "Aktuelle Clusterzahl"
+    threshold_label: "Fusionsabstand"
+    groups_heading: "Gruppen bei diesem Schnitt"
+    merges_heading: "Fusionsreihenfolge"
+concept:
+  heading: Fachkonzept
+  intro: >
+    Hinter jeder Clustering-Methode steht ein logisches Regelwerk, das
+    Aufschluss darüber gibt, wie Datenpunkte zueinander in Beziehung stehen. Die
+    Wahl der richtigen Methode hängt von der Struktur Ihrer Daten ab. Manche
+    Daten bilden von Natur aus runde clusters während andere sich zu Ketten oder
+    Kurven erstrecken. Schauen wir uns die beiden wichtigsten Regelwerke an, die
+    wir in der Werbeagentur verwenden.
+  rules:
+    - heading: "Regelwerk A: Zentrumsbasierte Logik (Die Schwerkraftregel)"
+      intro: "In diesem Modell dreht sich alles um einen zentralen Punkt, den Schwerpunkt."
+      points:
+        - label: "Die Idee:"
+          text: "Jeder Cluster hat ein Zentrum, zu dem nahegelegene Datenpunkte zugeordnet werden."
+        - label: "Entstandene Form:"
+          text: "Runde, kugelförmige Cluster, die kompakt und klar abgegrenzt sind."
+        - label: "So funktioniert es:"
+          text: "Der Algorithmus (wie K-Means) berechnet den Abstand jedes Punktes vom Zentrum. Je näher eine Anzeige ist, desto stärker ist ihre Zugehörigkeit."
+        - label: "Beispiel:"
+          items:
+            - "Make-up-Tutorial und Fashion-Week-App -> werden zum Modezentrum hingezogen."
+            - "Börsen-App und Bohrerset -> werden zum Tech-Zentrum hingezogen."
+        - label: "Wichtige Erkenntnis:"
+          text: "Die Schwerkraftregel funktioniert am besten, wenn Cluster kreisförmig und klar voneinander getrennt sind."
+    - heading: "Regelwerk B: Dichtebasierte Logik (Die Verbindungsregel)"
+      intro: "Dieses System konzentriert sich eher auf die Beziehungen zwischen Punkten als auf den Abstand zu einem Zentrum."
+      points:
+        - label: "Die Idee:"
+          text: "Punkte, die nahe beieinander liegen, bilden zusammenhängende Ketten oder Nachbarschaften."
+        - label: "Entstandene Form:"
+          text: "Unregelmäßige oder geschwungene Cluster, die dem Datenfluss folgen."
+        - label: "So funktioniert es:"
+          text: "Solange ein Punkt nahegelegene Nachbarn hat, wächst die Gruppe weiter. Wenn zu wenige Punkte in der Nähe sind, bricht die Kette ab."
+        - label: "Beispiel:"
+          items:
+            - "Werbung für Turnschuhe → verbunden mit Werbung für Sportgetränke → verbunden mit Werbung für eine Fitnessstudio-Mitgliedschaft."
+            - "Auch wenn der erste und der letzte Punkt weit voneinander entfernt sind, hält die „Spur“ der Verbindungen sie im selben Cluster zusammen."
+        - label: "Das Wichtigste:"
+          text: "Die Verbindungsregel eignet sich perfekt, um flexible Gruppen oder „Trends“ zu entdecken, bei denen die Nähe wichtiger ist als die Form."
+  tool_choice_heading: "Die Wahl des richtigen Tools: Auf die Form kommt es an"
+  tool_choice_items:
+    - "Kreisförmige „Kleck“-Daten → verwende die Gravity-Regel (K-Means)."
+    - "Lange oder gewundene Daten → verwende die Connection-Regel (DBSCAN)."
+  tool_choice_body: >
+    Wenn du eine kreisförmige Regel auf kettenartige Daten anwendest, zerlegt
+    sie das Muster in Einzelteile, da die Enden zu weit voneinander entfernt
+    erscheinen. Die richtige Regel berücksichtigt die Geometrie der Daten und
+    lässt verborgene Strukturen auf natürliche Weise zum Vorschein kommen.
+  noise_heading: "Rauschen und Ausreißer – Die, die nicht ins Bild passen"
+  noise_body: >
+    Nicht jede Anzeige findet einen passenden Platz in der Masse. Stell dir vor,
+    unsere Agentur erhält eine Anzeige für ein Luxus-Weltraumtourismus-Paket,
+    elegant, futuristisch und völlig anders als die anderen.
+  noise_items:
+    - "Mit der Gravity-Regel: Das System versucht dennoch, sie irgendwo einzuordnen, wahrscheinlich unter „Tech“ aufgrund ihres fortschrittlichen Themas, auch wenn sie dort eigentlich nicht hingehört."
+    - "Mit der Verbindungsregel: Der Algorithmus sucht nach ähnlichen Anzeigen in der Nähe und findet keine. Also stuft er diese Anzeige als „Rauschen“ ein – nicht als Fehler, sondern als ehrliches Zeichen dafür, dass sie sich abhebt."
+  noise_important: "Wichtig: Beim Clustering bedeutet „Rauschen“ nicht wertlos, sondern originell. Manche Anzeigen sind einzigartig, zu besonders, zu innovativ oder zu nischig, um sich nahtlos in die Masse einzufügen. Du verdienst dein eigenes Rampenlicht."
+  density_heading: "Vergleich: runde Wolke gegen Kettenstruktur"
+  density_intro: >
+    In der Visualisierung unten siehst du dieselben Punkte mit zwei
+    Interpretationen. Links wird das Muster grob in linke und rechte Bereiche
+    gezwungen. Rechts bleibt die Kette als zusammenhaengender Trend erhalten.
+  interactive:
+    toggle_label: "Rauschpunkt einblenden"
+    center_heading: "Zentrumsbasierte Sicht"
+    density_heading: "Dichtebasierte Sicht"
+    compact_label: "Kompakte Wolke"
+    chain_label: "Kettenstruktur"
+    noise_label: "Rauschen"
+    center_caption: >
+      Die Schwerkraftregel zieht Punkte zu wenigen Zentren. Lange Ketten werden
+      dabei oft unnatuerlich zerlegt.
+    density_caption: >
+      Die Verbindungsregel betrachtet lokale Nachbarschaften. Dadurch kann die
+      Kette als ein zusammenhaengender Trend sichtbar bleiben.
+exercises:
+  heading: Übungen
+  intro_heading: "Die Regelwerke auf die Probe stellen"
+  intro_paragraphs:
+    - >
+      Dein Abenteuer in der Werbeagentur geht weiter. Gerade als du dich mit dem
+      Clustering vertraut gemacht hast, erscheint plötzlich eine Warnmeldung auf
+      deinem Bildschirm:
+    - "⚠️ WARNUNG: Der Ad-Manager-Bot hat eine Störung!"
+    - >
+      Er soll eigentlich Anzeigen basierend auf Zielgruppentrends organisieren,
+      aber irgendetwas ist schiefgelaufen. Das System verwendet den falschen
+      Algorithmus und teilt Kampagnen auf eine Weise auf, die keinen Sinn
+      ergibt. Zeit, einzugreifen und das Problem zu beheben.
+  scenario_heading: "Der fehlerhafte Anzeigenmanager"
+  scenario_intro: >
+    Du öffnest das Dashboard und erkennst drei unterschiedliche Muster in den
+    Daten – jedes steht für eine andere Art von Nutzerverhalten:
+  scenario_patterns:
+    - label: "Hardcore-Gamer: (1, 1), (1,2, 1,1), (1,5, 1,2)"
+      note: "Eine eng verbundene Gruppe, die zusammenbleibt."
+    - label: "Viraler „Grüner Smoothie“-Trend: (5, 5), (6, 5), (7, 5), (8, 5), (9, 5)"
+      note: "Eine lange Kette von Nutzern unterschiedlicher Art, die durch ein gemeinsames virales Interesse lose miteinander verbunden sind."
+    - label: "Zufälliges Bot-Konto: (10, 10)"
+      note: "Ein seltsamer Ausreißer, der keinem bekannten Muster zugeordnet werden kann."
+  scenario_followup: "Nun benötigt der Ad-Bot Ihre Hilfe, um herauszufinden, welches Regelwerk zu jedem Szenario passt."
+  steps:
+    - heading: "Schritt 1 - Führe absichtlich das falsche Tool aus"
+      intro: "In deinem Jupyter-Notebook wendest du zunächst den Round Detector (K-Means) an."
+      prompt: "Beobachten Sie, was passiert:"
+      items:
+        - "Der Algorithmus zwingt die „Green Smoothie“-Kette in zwei separate Cluster, da er versucht, kreisförmige Gruppen zu bilden."
+        - "Er ordnet sogar das Bot-Konto einem dieser Cluster zu, einfach weil er keinen Datenpunkt ungruppiert lassen kann."
+      closing: "Dies ist die Einschränkung der Gravity Rule: Sie geht davon aus, dass jeder Cluster ein Kreis ist, selbst wenn die Daten dies eindeutig nicht sind."
+    - heading: "Schritt 2 - Wechseln Sie zum richtigen Tool"
+      intro: "Probiere als Nächstes den Chain Detector (DBSCAN) aus und vergleiche:"
+      items:
+        - "Dieser Algorithmus erkennt den Smoothie-Trend als ein zusammenhängendes Muster, das durch räumliche Nähe verbunden ist."
+        - "Außerdem identifiziert er das Bot-Konto als Störsignal und zeigt damit, dass nicht jeder Punkt einer bestimmten Kategorie zugeordnet werden muss."
+      closing: "Du wirst sofort erkennen, wie unterschiedlich die beiden Ansätze dieselben Daten interpretieren, der eine erzwingt Ordnung, der andere respektiert die Struktur."
+    - heading: "Schritt 3 - Nachdenken und diskutieren"
+      intro: "Wenn du dir beide Ergebnisse angesehen hast, nimm dir einen Moment Zeit zum Nachdenken:"
+      paragraphs:
+        - "Wenn unsere KI jemanden als „Rauschen“ einstuft, nur weil sein Muster ungewöhnlich ist, was bedeutet das dann im realen Marketingkontext?"
+        - "Ignorieren wir damit unbeabsichtigt einzigartige Kunden, oder lernen wir, Individualität in Daten zu schätzen?"
+  knowledge_check_heading: "Wissenscheck:"
+  knowledge_check_intro: "Entscheide anhand der folgenden Szenarien, welches Vorgehen geeignet ist und wofür es eingesetzt werden kann."
+  knowledge_check_items:
+    - scenario: "Eine Smart-Home-Gruppe umfasst Glühbirnen (2,2), Steckdosen (2.1, 2) und Hubs (2, 2.2)."
+      answer: "Regelwerk: Zentrumsbasiert (kreisförmig)."
+    - scenario: "Ein Musikentdeckungs-Trend, bei dem Hörer von Künstler A zu Künstler B führen, der wiederum zu Künstler C in einer langen Kette führt."
+      answer: "Regelwerk: Dichtebasiert (Kette)."
+    - scenario: "Eine Familienplan-Anzeige, die zu 30 % aus Unterhaltung und zu 70 % aus Sicherheit besteht."
+      answer: "Regelwerk: Weiche Gruppierung (Wahrscheinlichkeiten)."
+    - scenario: "Sortierung von Anzeigen nach Global -> Europa -> Deutschland -> Berlin."
+      answer: "Regelwerk: Hierarchische Gruppierung."

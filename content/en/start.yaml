@@ -1,0 +1,35 @@
+title: Interactive Clustering Applet
+intro: >
+  Welcome to an interactive learning environment about clustering,
+  similarities in data, and unsupervised learning.
+learning_journey:
+  heading: What to Expect
+  items:
+    - You start with familiar examples for sorting and comparing.
+    - Then you explore features, coordinates, and visible groups in data.
+    - Then you learn K-Means step by step.
+    - At the end, you compare different grouping styles in the advertising-agency scenario.
+usage:
+  heading: How to Use This App
+  body: >
+    Work through the modules at your own pace. First observe the examples,
+    then try the interactions, and read the short explanations right where
+    they are useful.
+advanced_hint:
+  heading: For Advanced Learners
+  body: >
+    You do not need prior machine learning knowledge. If you already enjoy
+    working with Python, a later module offers a gentle bridge to further examples.
+module_overview:
+  heading: Learning Journey Through the Modules
+  modules:
+    - title: Start
+      summary: Orientation, entry point, and overview of the learning journey.
+    - title: Module 1
+      summary: Understand unsupervised learning through everyday sorting ideas.
+    - title: Module 2
+      summary: Map and compare real-estate data from different analytical viewpoints.
+    - title: Module 3
+      summary: Follow K-Means step by step in the schoolyard example.
+    - title: Module 4
+      summary: Prepare for different grouping styles in the advertising-agency scenario.

@@ -1,0 +1,85 @@
+title: "Module 4: The Advertising Agency - Different Ways of Grouping"
+intro: >
+  After K-Means, students now see that not every grouping problem can be solved
+  with the same rule. Some ads sit between two audiences, some merge into
+  nested families, and others form chains instead of round clouds.
+exploration:
+  heading: Exploration
+  scenario_heading: "The scenario:"
+  scenario: >
+    Imagine entering a busy advertising agency whose walls are covered with
+    colorful campaign posters and whose whiteboards are full of ideas.
+  scenario_followup: >
+    Traditionally, advertisers sort their content into strict categories. But a
+    smartwatch ad can be both a technology product and a fashion accessory.
+  interactive_heading: "The interactive scenario:"
+  interactive_intro: >
+    To explore this idea, experiment with an interactive map of advertising
+    preferences.
+  dataset_table_heading: "Here is the selection of ads you will work with:"
+  dataset_table_headers:
+    - Ad ID
+    - Description
+    - Technology interest (X)
+    - Fashion interest (Y)
+    - Category
+  dataset_table_rows:
+    - ["Ad 1", "Make-up tutorial", "18", "88", "Group A (yellow)"]
+    - ["Ad 2", "Fashion-week app", "22", "82", "Group A (yellow)"]
+    - ["Ad 3", "Minecraft game app", "92", "12", "Group B (blue)"]
+    - ["Ad 4", "Cleaning robot", "88", "18", "Group B (blue)"]
+    - ["Hybrid", "Smartwatch ad", "55", "50", "Uncertain"]
+  dataset_observation: >
+    At first glance the groups seem clear, but the smartwatch ad lies in the
+    middle, balanced between technology and style.
+  experiment_heading: "The experiment"
+  experiment_intro: >
+    In this exercise, adjust the smartwatch ad with the Targeting Focus slider.
+  experiment_membership_intro: >
+    Instead of jumping suddenly from one category to another, membership values
+    change gradually.
+  experiment_membership_examples:
+    - 60% tech (Group B)
+    - 40% fashion (Group A)
+  experiment_summary: >
+    This continuous membership range is what makes fuzzy clustering powerful.
+  big_idea_heading: "The big idea"
+  big_idea_paragraphs:
+    - >
+      In fuzzy clustering, each data point, ad, product, and person is allowed
+      to be complex.
+    - >
+      There are no rigid boundaries, only blended identities.
+    - >
+      Soft grouping opens a more realistic and flexible way to understand data.
+  interactive:
+    heading: "Interactive map: soft membership"
+    intro: >
+      Use the slider to move the smartwatch's targeting focus.
+    slider_label: "Smartwatch targeting focus"
+    slider_left: "more style"
+    slider_right: "more tech"
+    membership_heading: "Current membership"
+    tech_label: "Tech group"
+    style_label: "Style group"
+    explanation_template: >
+      At this focus, the smartwatch is {tech}% tech and {style}% style.
+    plot_caption: >
+      The fixed ads remain in place. Only the smartwatch moves between both
+      groups.
+structuring:
+  heading: Structuring
+  intro: >
+    Soft membership helps with mixed cases, but some datasets are better
+    understood through a nested merge structure.
+concept:
+  heading: Concept
+  intro: >
+    Different clustering rules fit different geometries: center-based, soft,
+    hierarchical, and density-based views all reveal different aspects of the
+    same data.
+exercises:
+  heading: Exercises
+  intro: >
+    Students connect the three perspectives of the module: partial membership,
+    nested structure, and density-based connections.

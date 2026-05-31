@@ -1,0 +1,11 @@
+food_name,display_name_de,display_name_en,emoji,example_family,calories_kcal,sugar_g,fat_g,fiber_g
+apple,Apfel,Apple,🍎,healthy_natural,52,10.4,0.2,2.4
+broccoli,Brokkoli,Broccoli,🥦,healthy_natural,34,1.7,0.4,2.6
+strawberry,Erdbeere,Strawberry,🍓,healthy_natural,32,4.9,0.3,2.0
+carrot,Karotte,Carrot,🥕,healthy_natural,41,4.7,0.2,2.8
+banana,Banane,Banana,🍌,healthy_natural,89,12.2,0.3,2.6
+burger,Burger,Burger,🍔,processed_sweets,295,5.0,14.0,1.5
+pizza,Pizza,Pizza,🍕,processed_sweets,266,3.6,10.4,2.3
+donut,Donut,Donut,🍩,processed_sweets,452,22.0,25.0,1.5
+fries,Pommes,Fries,🍟,processed_sweets,312,0.3,15.0,3.8
+apple_cake,Apfelkuchen,Apple Cake,🍰,processed_sweets,263,16.5,11.0,1.2

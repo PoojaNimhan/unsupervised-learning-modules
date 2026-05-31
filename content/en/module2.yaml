@@ -1,0 +1,210 @@
+title: "Module 2: The Real-Estate Broker - Mapping the Unknown"
+intro: >
+  In this module you investigate how properties can be grouped into clusters
+  based on measurable features. The key insight is that the chosen features
+  determine what counts as similar.
+exploration:
+  heading: Exploration
+  feature_heading: "How features shape clusters"
+  intro: >
+    This activity shows how the choice of features determines how data points
+    gather into clusters. The same dataset can lead to very different cluster
+    patterns depending on which variables are compared.
+  dataset_intro: >
+    The dataset contains ten real-estate listings with descriptive attributes
+    and numerical values.
+  table_heading: "Property listings and their features"
+  interactive_heading: "Interactive feature selection"
+  interactive_intro: >
+    The Streamlit application makes it possible to switch the variables used in
+    the scatter plot.
+  x_axis_options: "Options for the X axis: area, rooms, price"
+  y_axis_options: "Options for the Y axis: rooms, price, condition"
+  controls:
+    x_axis_label: "Which feature should appear on the X axis?"
+    y_axis_label: "Which feature should appear on the Y axis?"
+    highlight_outlier_label: "Highlight the ruin directly"
+  axis_labels:
+    area_sqm: "Area (m²)"
+    rooms: "Rooms"
+    price_eur: "Price (€)"
+    condition_score: "Condition"
+  axis_summary_template: "Current view: {x_axis} on the X axis and {y_axis} on the Y axis."
+  chart_caption: >
+    Each combination offers a different analytical perspective. By observing
+    how the points group under different feature pairs, it becomes clear that
+    the definition of similarity depends entirely on which dimensions are
+    compared.
+  outlier_annotation_label: "Ruin"
+  outlier_default_note: >
+    Entry 9 stands out in almost every view. Activate the highlight if you want
+    to inspect more closely why it appears as an outlier.
+  outlier_explanation_template: >
+    In this view, entry 9 combines {x_label} = {x_value} with {y_label} =
+    {y_value}. This mixture of large area, weak condition, and relatively low
+    price makes the ruin stand out.
+  observation_heading: "Example observations"
+  observations:
+    - "Area vs. price: Larger houses tend to follow a rising price trend."
+    - "Rooms vs. condition: Properties may separate more strongly by quality than by size."
+    - "Entry 9 (The ruin): In the visualization, this property appears throughout as an outlier because it combines a large area with a low price and poor condition."
+structuring:
+  heading: Structuring
+  intro: >
+    This section introduces the number of clusters k and the role of outliers in
+    clustering analysis. The key question is how group boundaries change when k
+    is adjusted.
+  dataset_intro: >
+    To illustrate these ideas, a smaller scaled dataset of ten properties is
+    used. Each unit on the axes corresponds to Area 1 = 50 m² and Price 1 =
+    €100,000.
+  table_heading: "Simplified dataset"
+  comparison_heading: "Interactive task: adjust the number of clusters"
+  comparison_intro: >
+    Compare the same data with k = 2 and k = 3. This makes coarse and finer
+    groupings visible side by side.
+  k_labels:
+    2: "k = 2: coarse grouping"
+    3: "k = 3: finer grouping"
+  group_summary_template: "Cluster sizes: {group_sizes}"
+  k_explanations:
+    - heading: "k = 2"
+      bullets:
+        - The algorithm splits the objects into two large clusters.
+        - Studios form one cluster.
+        - Family houses and luxury villas merge into a single broad group.
+    - heading: "k = 3"
+      bullets:
+        - The subdivision becomes more detailed.
+        - "Cluster 1: Budget properties (studios)"
+        - "Cluster 2: Family houses in the middle price range"
+        - "Cluster 3: High-price luxury villas"
+  outlier_heading: "Detecting outliers"
+  outlier_body: >
+    The ghost house lies far away from the other points. If it were forced into
+    a cluster, the cluster centers and average values would be distorted. It is
+    an outlier, a point that should not be assigned cleanly.
+  k_table_heading: "How do the group assignments change?"
+  k_table_note: >
+    Use the table to compare how the properties are split more finely with
+    k = 3 than with k = 2.
+  principles_heading: "Core principles"
+  principles:
+    - The parameter k determines the granularity of the grouping.
+    - "Too small (k = 1): All data lie in one cluster and reveal little."
+    - "Too large (k = 10): Every point becomes isolated and no generalization remains."
+    - Outliers are values that lie far outside the main cluster areas.
+    - A suitable choice of k balances simplicity and accuracy.
+concept:
+  heading: Concept
+  intro: >
+    This section explains how clustering algorithms divide the data space. The
+    partitioning logic follows geometric rules based on how distances between
+    data points and centers are measured. The focus is on linear boundaries,
+    circular boundaries, and the impact of the chosen cluster number k.
+  sections:
+    - title: "1. Border patrol (linear boundaries / Voronoi logic)"
+      groups:
+        - label: "Concept:"
+          paragraphs:
+            - "The algorithm compares the distances between data points and cluster centers."
+            - "A straight line (or in higher dimensions a hyperplane) is drawn exactly between two centers."
+            - "Points on one side belong to cluster A; points on the other side belong to cluster B."
+        - label: "Analogy:"
+          paragraphs:
+            - "Similar to drawing a border between two regions, where the border has the same distance to both centers."
+        - label: "Result:"
+          paragraphs:
+            - "Groups are separated by linear dividing lines, creating polygon-shaped areas on the data map."
+    - title: "2. Expanding waves (circular boundaries)"
+      groups:
+        - label: "Concept:"
+          paragraphs:
+            - "Each cluster center acts as an expansion point."
+            - "A circle expands outward from the center."
+            - "Every point inside the radius belongs to this cluster."
+        - label: "Multiple clusters:"
+          paragraphs:
+            - "When circles expand and meet, the point of contact forms the boundary between two neighboring clusters."
+            - "This method leads to rounded cluster regions instead of straight boundaries."
+    - title: "3. Determining the number of clusters k"
+      groups:
+        - label: "Definition:"
+          paragraphs:
+            - "k stands for the total number of clusters defined by the algorithm."
+        - label: "Effects of different values:"
+          items:
+            - "Few clusters (k = 1) -> minimal distinction; all data are combined into one area."
+            - "Small k -> few, larger clusters; differences between data points are captured only roughly."
+            - "Large k -> many, smaller clusters; the data are divided more finely, with the risk of too much splitting."
+            - "Suitable k -> a meaningful grouping where the essential structure of the data becomes visible without unnecessary complexity."
+        - label: "Goal:"
+          paragraphs:
+            - "Determine the optimal value of k, where the clusters capture the essential structure without creating unnecessary complexity."
+  applications_heading: "Applications in practice"
+  applications_intro: "Examples of clustering applications are:"
+  applications:
+    - Product segmentation in food retail (for example organic, budget, and premium categories).
+    - Audience grouping in streaming recommendations (viewing habits, genres, frequency).
+exercises:
+  heading: Exercises
+  intro: >
+    This section contains practical exercises that apply clustering principles
+    through a simple geometric interpretation. Each task highlights how
+    clusters arise from boundaries and circles and how outliers can be
+    recognized.
+  dataset_heading: "Task 1: The neighborhood planner"
+  dataset_intro: >
+    A dataset with ten houses is provided. Each house is represented as a point
+    on a two-dimensional map:
+  table_columns:
+    - House
+    - Living area
+    - Price
+  table_rows:
+    - [A, "1", "2"]
+    - [B, "2", "2"]
+    - [C, "2", "3"]
+    - [D, "5", "5"]
+    - [E, "6", "6"]
+    - [F, "5", "6"]
+    - [G, "9", "9"]
+    - [H, "10", "10"]
+    - [I, "9", "10"]
+    - [J, "9", "1"]
+  axis_note: "Each unit on the axes corresponds to an area of 1 = 50 m² and a price of 1 = €100,000."
+  tabs:
+    line:
+      label: "Task A - Divide the town"
+      items:
+        - "Draw a straight line that separates the houses into two groups: affordable and expensive."
+        - "The line typically runs between the coordinates (3, 3) and (6, 6)."
+        - "This creates a linear boundary that shows how the feature space can be divided into two regions."
+    circles:
+      label: "Task B - Discover the neighborhoods"
+      intro: >
+        Since three clusters may now be defined, circular boundaries can be
+        drawn around dense groups of points.
+      clusters:
+        - "Cluster 1: starter homes (A, B, C)"
+        - "Cluster 2: family homes (D, E, F)"
+        - "Cluster 3: luxury properties (G, H, I)"
+      paragraphs:
+        - "Each circle represents a cluster whose center lies roughly in the middle of the group."
+        - "Where two circles touch, a natural boundary appears between the clusters."
+        - "This illustrates how clusters can form around centers rather than along straight dividing lines."
+    outlier:
+      label: "Task 2 - Identify the outlier"
+      intro: >
+        Look at the data points again to find the value that does not match the
+        observed pattern.
+      items:
+        - "Point J (9, 1) combines a large living area with an unusually low price."
+        - "This point lies far away from the luxury cluster (G, H, I) and cannot be assigned seamlessly to a group."
+        - "Such points are called outliers because their properties differ significantly from the general distribution."
+  key_takeaways_heading: "Key takeaways"
+  key_takeaways:
+    - Linear boundaries divide space by comparing distances.
+    - Circular neighborhoods group data around a center.
+    - Outliers are exceptional cases that should not be assigned carelessly.
+    - Clustering reveals structure, but unusual cases must still be recognized.

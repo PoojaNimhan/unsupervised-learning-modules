@@ -1,0 +1,9 @@
+snack_name,display_name_de,display_name_en,emoji,sugar_g,fat_g,example_type
+apple,Apfel,Apple,🍎,10.4,0.2,predefined
+banana,Banane,Banana,🍌,12.2,0.3,predefined
+peach,Pfirsich,Peach,🍑,8.4,0.3,predefined
+strawberry,Erdbeere,Strawberry,🍓,4.9,0.3,predefined
+potato_chips,Kartoffelchips,Potato Chips,🥔,0.3,35.0,predefined
+peanut_puffs,Erdnussflips,Peanut Puffs,🥜,2.5,32.0,predefined
+fruit_yogurt,Fruchtjoghurt,Fruit Yogurt,🥣,15.0,3.5,new_example
+fitness_bar,Fitness-Riegel,Fitness Bar,🥜,5.0,15.0,new_example

@@ -1,0 +1,6 @@
+ad_id,display_name_de,tech_score,style_score,ad_group,role
+1,Make-up-Tutorial,18,88,Style,style_anchor
+2,Fashion-Week-App,22,82,Style,style_anchor
+3,Minecraft-Game-App,92,12,Tech,tech_anchor
+4,Putzroboter,88,18,Tech,tech_anchor
+5,Smartwatch-Anzeige,55,50,Hybrid,hybrid

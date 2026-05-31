@@ -1,0 +1,249 @@
+title: "Module 1: Understanding Unsupervised Learning"
+intro: >
+  In this module you begin with a human sorting task and then explore how
+  computers can detect groups without being given ready-made labels.
+exploration:
+  heading: Exploration
+  task_intro: >
+    Imagine entering a huge, mysterious pantry. Food items are scattered
+    everywhere, but there are no signs, no shelves, and no names.
+  drag_instruction: >
+    Drag the food cards into two different boxes and create your own order.
+  group_a_label: Group A
+  group_b_label: Group B
+  unassigned_label: Food cards
+  reset_label: Reset grouping
+  current_grouping_heading: "Current manual grouping"
+  current_grouping_note: >
+    This table stores your current grouping so that it can later be compared
+    with an automatic clustering approach.
+  table_columns:
+    food: Food
+    group: Current group
+  observation_heading: "Look closely"
+  observation_questions:
+    - How did you decide what belongs where?
+    - What makes the items in Box 1 similar?
+    - How are they different from the items in Box 2?
+  everyday_labels_note: >
+    Important: Without any extra information, you still sorted them. You may
+    have instinctively sorted them the way we are used to in everyday life. But
+    why? Most of the time, we use names and categories we learned earlier to
+    organize the world. We give things "labels" so that we can recognize them
+    immediately.
+  food_examples:
+    - food_name: apple
+      description: Crisp fruit with little fat and a moderate sugar value.
+    - food_name: broccoli
+      description: Green vegetable with little sugar and lots of fiber.
+    - food_name: strawberry
+      description: Sweet berry with few calories and very little fat.
+    - food_name: carrot
+      description: Crunchy vegetable with little fat and lots of fiber.
+    - food_name: banana
+      description: Sweet fruit with a bit more sugar and calories than apple.
+    - food_name: burger
+      description: Processed fast-food example with much more fat.
+    - food_name: pizza
+      description: Processed meal with more fat and energy than fruit or vegetables.
+    - food_name: donut
+      description: Very sweet pastry with lots of sugar and fat.
+    - food_name: fries
+      description: Fried potato portion with lots of fat and calories.
+    - food_name: apple_cake
+      description: Dessert with relatively high sugar, fat, and calorie values.
+structuring:
+  heading: Structuring
+  intro: >
+    In the exploration phase you sorted objects according to your own idea of
+    similarity. If we now view the same process from the perspective of a
+    computer program, the computer needs measurable values.
+  computer_difference:
+    - A computer does not distinguish between "healthy" and "unhealthy".
+    - Instead, it works with measurable properties called features.
+  features_intro: "For food, these features could be used for example:"
+  features:
+    - Calories (kcal per 100 g)
+    - Sugar (g per 100 g)
+    - Fat (g per 100 g)
+    - Fiber (g per 100 g)
+  distance_explanation: >
+    If two food items are similar in these features, they appear close together
+    to the computer. If they differ strongly, they appear far apart.
+  comparison_table_columns:
+    food_name: Food
+    calories_kcal: Calories (kcal)
+    sugar_g: Sugar (g)
+    fat_g: Fat (g)
+  apple_vs_donut:
+    heading: "Comparison: Apple and donut"
+    intro: >
+      Imagine you want to compare an apple and a donut. For the computer, only
+      measurable features matter.
+    explanation: >
+      Looking at the values, the donut contains much more calories, sugar, and
+      fat. These numerical differences are what the computer can compare.
+  banana_similarity:
+    heading: "Which foods are most similar to the banana?"
+    prompt: >
+      Look at the banana values and think about which food is numerically most
+      similar.
+    reference_food: banana
+    reveal_label: "Show answer"
+    answer:
+      intro: "If we look at the values (sugar, fat, calories), we can see:"
+      items:
+        - Apple and banana both have little fat, relatively few calories, and a medium sugar value.
+        - They are close to each other in terms of numbers.
+      closing: >
+        For the computer, apple and banana therefore belong in a similar group
+        because their measurable properties are similar. The information that both
+        are fruit is not used; only the similarities in the numerical feature
+        values matter.
+  apple_cake_similarity:
+    heading: "Which foods are most similar to apple cake?"
+    prompt: >
+      Look again at fat, sugar, and calories. Which food seems numerically most
+      similar to apple cake?
+    reference_food: apple_cake
+    reveal_label: "Show answer"
+    answer:
+      intro: "Here we again look at fat, sugar, and calories:"
+      items:
+        - Apple cake has much more fat and calories than fruit and also quite a lot of sugar.
+        - A donut also has very high calories, fat, and sugar.
+      closing: >
+        For the computer, apple cake and donut are more likely to belong in a
+        common group because they are similar in several features. Appearance or
+        taste do not matter here either. Only the numerical feature values are
+        decisive for the grouping.
+  self_compare:
+    heading: "Try your own comparisons"
+    prompt: >
+      Choose two foods and compare their feature values in a table.
+    compare_label_left: First food
+    compare_label_right: Second food
+    explanation: >
+      A computer does not see labels such as fruit or dessert. It only sees
+      measurable values and compares similarity through them.
+concept:
+  heading: Concept
+  pattern_table_heading: "Different features → different patterns → different clusters"
+  pattern_table_rows:
+    - Merkmal im Fokus: Sugar
+      Sichtbares Muster: Banana and apple lie close together.
+    - Merkmal im Fokus: Fat
+      Sichtbares Muster: Donut and apple cake move closer together.
+    - Merkmal im Fokus: Calories
+      Sichtbares Muster: Very energy-rich foods form another corner of the space.
+  central_idea_heading: "Core idea of unsupervised learning"
+  central_idea_body:
+    - Computers compare objects by mathematically comparing feature values.
+    - If two objects have similar feature values, they lie close together.
+    - If the values differ strongly, they lie farther apart.
+    - Grouping does not arise from names such as healthy or unhealthy.
+    - It arises from measurable properties of the data.
+  unsupervised_learning_body: >
+    In unsupervised learning, the computer is not given categories or correct
+    answers in advance. Instead, similarities between objects are calculated
+    from their features.
+  system_can_heading: "Such a system can, for example:"
+  system_can:
+    - title: Assign new data to existing patterns
+      example: "Example: A banana is recognized as similar to fruit such as an apple."
+    - title: Notice when something does not fit
+      example: "Example: A steak differs strongly from all sweet snacks."
+    - title: Identify striking or unusual points
+      example: "Example: Apple cake lies somewhat between fruit and dessert."
+  closing_note: >
+    In this way the computer decides whether a new object is typical, similar,
+    or unusual, even without predefined categories.
+exercises:
+  heading: "Exercises: Snack Explorer Adventure"
+  intro: >
+    Welcome, snack explorer! Imagine you are exploring the wild world of snacks.
+    Your mission is to find out which snacks belong together without being told
+    what is healthy or unhealthy.
+  mission_1:
+    heading: "Mission 1: Discover the first snacks"
+    intro: >
+      Your equipment: a magic map with two axes. On the X axis you place sugar,
+      and on the Y axis you place fat.
+    axis_setup:
+      - "X axis: Sugar (g/100g) – the sweeter, the farther right."
+      - "Y axis: Fat (g/100g) – the fattier, the higher."
+    table_heading: "Snack explorers and their coordinates"
+    chart_note: >
+      In this scatter plot all predefined snacks are shown directly with emojis.
+    task_questions:
+      - "Draw your magic map: X 0-25 (sugar), Y 0-35 (fat)."
+      - "Mark each snack as a point (with emoji!)."
+      - "Which snacks have gathered together on your map?"
+  mission_2:
+    heading: "Mission 2: Find the hidden clans"
+    prompt: >
+      What do you see on your map?
+    clans:
+      - title: "Clan 1: The sweet valley dwellers"
+        snacks: "🍎 🍌 🍑 🍓"
+        explanation: "They are sweet but almost fat-free, so they gather at the bottom right."
+      - title: "Clan 2: The fatty mountain clan"
+        snacks: "🥔 🥜"
+        explanation: "They contain a lot of fat but almost no sugar, so they gather at the top left."
+    reflection_question: >
+      Explorer question: How were these snacks grouped even though no labels
+      such as fruit, nuts, or vegetables were given?
+  mission_3:
+    heading: "Mission 3: Rescue the lost snacks"
+    intro: >
+      Two snacks got lost in the snack world. Plot their points and think about
+      which group they most resemble.
+    examples:
+      - title: "First lost snack: Fruit yogurt"
+        snack_name: fruit_yogurt
+        details:
+          - "Sugar: 15.0 g/100g | Fat: 3.5 g/100g | Point: (15.0 ; 3.5)"
+          - "Mark the point on your map."
+          - "The position shows that this snack does not clearly belong to one group. It lies between two groups."
+      - title: "Second lost snack: Fitness bar"
+        snack_name: fitness_bar
+        details:
+          - "Sugar: 5.0 g/100g | Fat: 15.0 g/100g | Point: (5.0 ; 15.0)"
+          - "Mark the point."
+          - "This snack also lies between two groups."
+    clustering_note: >
+      New snacks are assigned to the most similar groups based on their feature values.
+  mission_4:
+    heading: "Mission 4: Wisdom check"
+    intro: "Answer each statement with yes or no."
+    questions:
+      - id: q1
+        prompt: The compass already knew that apples are fruit.
+        options: [Yes, No]
+        correct_option: No
+        feedback_correct: Exactly. Only numerical feature values are used.
+        feedback_incorrect: Not quite. The compass works with numbers, not with ready-made fruit labels.
+      - id: q2
+        prompt: Similar points automatically form groups.
+        options: [Yes, No]
+        correct_option: Yes
+        feedback_correct: Correct. That is why the fruits move together on the map.
+        feedback_incorrect: Actually yes. When points are close in feature values, groups emerge.
+      - id: q3
+        prompt: The compass can assign new snacks to groups.
+        options: [Yes, No]
+        correct_option: Yes
+        feedback_correct: Right. Fruit yogurt can be assigned to a group with similar values.
+        feedback_incorrect: It can. New examples are compared with existing patterns through their values.
+      - id: q4
+        prompt: Snacks between groups are hard to classify.
+        options: [Yes, No]
+        correct_option: Yes
+        feedback_correct: Correct. A fitness bar lies between several groups and is therefore ambiguous.
+        feedback_incorrect: Actually yes. Points between groups can fit several patterns partly.
+      - id: q5
+        prompt: Groups arise because of names such as chips.
+        options: [Yes, No]
+        correct_option: No
+        feedback_correct: Exactly. Groups arise from similar numerical feature values.
+        feedback_incorrect: Not yet. Names help humans, but computers rely on measured features.

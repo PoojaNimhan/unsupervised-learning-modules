@@ -1,0 +1,11 @@
+house_id,living_area_unit,price_unit,is_outlier
+A,1,2,False
+B,2,2,False
+C,2,3,False
+D,5,5,False
+E,6,6,False
+F,5,6,False
+G,9,9,False
+H,10,10,False
+I,9,10,False
+J,9,1,True

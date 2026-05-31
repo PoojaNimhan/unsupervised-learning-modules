@@ -1,0 +1,11 @@
+ad_id,display_name_de,interest_x,interest_y,theme_family
+1,Sportschuh-Anzeige,14,84,Fitness
+2,Sportgetraenk-Anzeige,18,76,Fitness
+3,Fitnessstudio-Mitgliedschaft,22,68,Fitness
+4,Luxusparfuem-Anzeige,44,88,Beauty
+5,Hautpflege-Anzeige,38,80,Beauty
+6,Altersvorsorge-Anzeige,86,82,Beruf
+7,Pauschalreise-Anzeige,62,52,Freizeit
+8,Spielkonsole-Anzeige,82,30,Entertainment
+9,Kinderspielzeug-Anzeige,70,24,Entertainment
+10,Business-Laptop-Anzeige,90,72,Beruf

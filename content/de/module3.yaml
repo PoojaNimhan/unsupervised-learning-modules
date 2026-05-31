@@ -1,0 +1,294 @@
+title: "Modul 3: K-Means auf dem Schulhof"
+intro: >
+  Auf dem Schulhof stehen Besucherinnen und Besucher an verschiedenen Stellen.
+  Deine Aufgabe ist es, Kuchenstaende so zu platzieren, dass die Wege moeglichst
+  kurz werden. Genau diese Idee steckt hinter K-Means.
+exploration:
+  heading: Erkundung
+  scenario_heading: "Aufgabe:"
+  scenario: >
+    Deine Schule veranstaltet ein großes Sommerfest. Viele Klassen backen
+    Kuchen, um diese zu verkaufen und Geld für eine Klassenfahrt zu sammeln.
+    Das Problem:
+  scenario_points:
+    - Jeder möchte, dass sein Kuchenstand an einem guten Standort steht.
+    - Die Besucher sollten nicht zu weit laufen müssen, um Kuchen zu kaufen.
+    - Zwischen den Ständen sollte genügend Platz sein, damit es nicht zu eng wird.
+  question_heading: "Die Frage lautet also:"
+  question: >
+    Wie viele Kuchenstände sollen wir aufstellen, und wo sollen wir sie auf
+    dem Schulhof platzieren?
+  reflection_heading: "Frage dich selbst:"
+  prompts:
+    - question: "Was passiert, wenn alle Stände nebeneinander stehen?"
+      answer: "Besucher, die weit weg sind, kommen nicht, weil der Weg zu weit ist."
+    - question: "Welche Probleme könnten auftreten, wenn sie zu weit verstreut sind?"
+      answer: "Vielleicht bekommen einige Stände nicht genug Kunden."
+  task_heading: "Erkundungsaufgabe"
+  task_steps:
+    - Nimm eine Karte des Schulhofs (oder ein einfaches Koordinatengitter).
+    - Markiere verschiedene Orte, von denen die Besucher normalerweise kommen (z. B. Klassenzimmer, Eingang, Spielplatz). Jeder Ort könnte als Punkt auf der Karte dargestellt werden.
+    - Stell dir nun vor, du hättest nur zwei oder drei Stände. Wo sollten diese aufgestellt werden, damit die Besucher den nächstgelegenen leicht erreichen können?
+structuring:
+  heading: Strukturierung
+  intro: >
+    Bei der Untersuchung hast du gesehen, dass Besucher oder Punkte, die nahe
+    beieinander liegen, ganz natürlich Gruppen bilden. Was wir nun suchen, ist
+    eine systematische Methode, um diese Gruppen zu finden - nicht nur durch
+    Betrachten, sondern mit Hilfe eines Computers und der Mathematik. Hier
+    kommt das K-Means-Clustering ins Spiel.
+  definition_heading: "Definition: Was ist K-Means?"
+  definition_body: >
+    K-Means ist ein Algorithmus des maschinellen Lernens, der Datenpunkte
+    automatisch in K Gruppen, sogenannte Cluster, einteilt, je nachdem, wie
+    nah die Punkte beieinander liegen.
+  definition_points:
+    - Das „K“ steht für die Anzahl der Gruppen, die man finden möchte.
+    - Der Begriff „Means“ leitet sich vom Mittelwert ab, da jede Gruppe durch die mittlere (durchschnittliche) Position ihrer Mitglieder repräsentiert wird.
+  definition_closing: >
+    Man kann sich den Algorithmus als einen Gruppensucher vorstellen, der viele
+    Punkte betrachtet und sagt: „Diese Punkte gehören zusammen, weil sie nahe
+    beieinander liegen.“
+  schoolyard_mapping_heading: "Bei unserem Schulfest:"
+  mapping_items:
+    - Jeder Besucher = ein Datenpunkt (Punkt).
+    - Jeder Kuchenstand = ein Clusterzentrum (der Mittelwert).
+    - Mit der K-Means-Methode lässt sich ermitteln, wo jeder Stand platziert werden sollte, damit er möglichst vielen Besuchern nahe ist.
+  algorithm_heading: "So funktioniert K-Means (Schritt-für-Schritt-Erklärung)"
+  algorithm_intro: >
+    Hier ist der logische Ablauf, ohne mathematische Formeln:
+  algorithm_steps:
+    - "Wähle K – die Anzahl der Gruppen oder Stände, die du haben möchtest."
+    - "Platziere K Startpunkte an beliebigen Stellen (so als würdest du raten, wo die Kuchenstände stehen könnten)."
+    - "Weise den Besuchern den nächstgelegenen Stand zu (jeder Besucher geht zum nächstgelegenen Startpunkt)."
+    - "Verschiebe den Stand an die durchschnittliche Position seiner Besucher."
+    - "Wiederhole die Schritte 3 und 4, bis sich kein Stand mehr bewegt; dann hast du die besten Positionen gefunden."
+  stepper:
+    controls:
+      k_label: "Wie viele Kuchenstaende sollen verglichen werden?"
+      preset_label: "Welche Startpositionen moechtest du ausprobieren?"
+      show_labels_label: "Besucher-IDs direkt anzeigen"
+      show_distance_label: "Distanzlinien im Zuordnungsschritt anzeigen"
+      initialize_label: "Initialisieren"
+      assign_label: "Zuordnen"
+      recompute_label: "Zentren neu berechnen"
+      next_iteration_label: "Naechste Iteration"
+      reset_label: "Reset"
+      changed_selection_notice: >
+        Du hast die Auswahl geaendert. Klicke auf "Initialisieren", um mit der
+        neuen Konfiguration neu zu starten.
+    status_messages:
+      not_started: "Noch keine Simulation aktiv. Waehle k und Startzentren und initialisiere dann den Ablauf."
+      initialized: "Die Startzentren sind gesetzt. Im naechsten Schritt wird jeder Punkt dem naechsten Zentrum zugeordnet."
+      assigned: "Alle Punkte sind nun einem Zentrum zugeordnet. Jetzt kannst du die Zentren an die Durchschnittsposition verschieben."
+      recomputed: "Die Zentren wurden verschoben. Wenn sie sich noch veraendern, beginnt jetzt die naechste Iteration."
+      stable: "Die Zentren bewegen sich nicht mehr. Der K-Means-Ablauf ist fuer diese Startwahl stabil geworden."
+    summaries:
+      active_config_label: "Aktive Konfiguration"
+      current_step_label: "Aktueller Schritt"
+      iteration_label: "Iteration"
+      assignments_heading: "Aktuelle Zuordnung"
+      centers_heading: "Zentrumstabelle"
+      current_step_values:
+        initialize: "Startzentren gesetzt"
+        assign: "Punkte zuordnen"
+        recompute: "Mittelpunkte neu berechnen"
+        next_iteration: "Naechste Iteration vorbereitet"
+    teaching_panel:
+      heading: "Zuordnung und Rechnung"
+      initialize_intro: "Beobachte zuerst die Startzentren. Noch ist kein Besucher fest zugeordnet."
+      assigned_intro: "Jeder Besucher ist jetzt dem naechsten Zentrum zugeordnet. Vergleiche die Farben und die eingezeichneten Distanzen."
+      recomputed_intro: "Nun werden aus den zugeordneten Punkten neue Mittelpunkte berechnet. Die alten Kreise und neuen Quadrate zeigen die Bewegung."
+      converged_intro: "Die neu berechneten Mittelpunkte stimmen mit den bisherigen ueberein. Weitere Iterationen wuerden nichts mehr aendern."
+      assigned_visitors_label: "Zugeordnete Besucher"
+      previous_center_label: "Vorheriges Zentrum"
+      current_center_label: "Aktuelles Zentrum"
+      formulas_heading: "Mittelwert-Rechnung"
+      no_points_note: "Keine Punkte zugeordnet: Das Zentrum bleibt an seiner alten Position."
+    presets:
+      2:
+        - key: iterative
+          label: "Lernstart: fast gleiche Startzentren"
+          description: "Die Zentren starten fast am selben Ort links unten. Dadurch werden mehrere Iterationen sichtbar, bevor sich die linke und rechte Gruppe sauber trennen."
+          centers:
+            - [0, 0]
+            - [0, 1]
+        - key: balanced
+          label: "PDF-Start: zwei gut verteilte Zentren"
+          description: "Die Zentren starten fast direkt an der Endloesung. Das ist gut zum Vergleich, aber der Ablauf ist deutlich kuerzer."
+          centers:
+            - [2, 2]
+            - [10, 10]
+      3:
+        - key: iterative
+          label: "Drei unguenstige Startzentren"
+          description: "Die drei Zentren starten an unpassenden Stellen. Beobachte ueber mehrere Iterationen, wie sich zuerst die groben Gruppen und danach die Mittelpunkte stabilisieren."
+          centers:
+            - [10, 7]
+            - [11, 4]
+            - [5, 10]
+        - key: diagonal
+          label: "Drei Startzentren mit Schraeglage"
+          description: "Auch diese Startwahl braucht mehrere Runden. Vergleiche, wie schnell sich die mittlere und rechte Gruppe trennen."
+          centers:
+            - [7, 3]
+            - [6, 7]
+            - [9, 7]
+concept:
+  heading: Fachkonzept
+  heart_heading: "Das mathematische Herzstück von K-Means"
+  heart_intro: >
+    K-Means ermittelt die optimalen Clusterzentren, indem es die
+    Gesamtentfernung zwischen jedem Punkt und seinem zugewiesenen Zentrum
+    minimiert. Der Algorithmus wiederholt diese beiden Schritte so lange, bis
+    sich die Lösung stabilisiert:
+  heart_steps:
+    - "Schritt 1: Jedem Punkt wird das nächstgelegene Zentrum zugewiesen."
+    - "Schritt 2: Jedes Zentrum wird zum Mittelwert aller ihm zugewiesenen Punkte verschoben."
+  key_formula_heading: "Die Schlüsselformel"
+  key_formula_intro: "Neue Mittelposition (nach jeder Iteration):"
+  key_formula_note: "(Neuer Mittelpunkt = Mittelwert der Positionen aller Punkte in der Gruppe.)"
+  symbol_heading: "Symbolerklärung:"
+  symbol_items:
+    - "&mu;<sub>j</sub> = neue Position des Clusterzentrums j"
+    - "N<sub>j</sub> = Anzahl der Punkte im Cluster j"
+    - "C<sub>j</sub> = alle dem Cluster j zugeordneten Punkte"
+    - "x<sub>i</sub> = Position jedes Punktes i in diesem Cluster"
+    - '&Sigma; = alle Positionen "aufsummieren"'
+  one_dimensional_example:
+    heading: "Berechnung für einen Kuchenstand"
+    intro: >
+      Szenario: 6 Besucher an den Positionen: [1, 2, 3, 10, 11, 12] (auf
+      einer eindimensionalen Linie, die den Schulhof darstellt). Wir möchten
+      K=2 Stände.
+    iteration_one_heading: "Iteration 1"
+    iteration_one_lines:
+      - "Beginne mit zufälligen Mittelpunkten: C1 = 2, C2 = 11"
+      - "Punkte nach Entfernung vergeben:"
+      - "Cluster 1: (am nächsten zu 2)"
+      - "Cluster 2: (am nächsten zu 11)"
+      - "Neue Mittelpunkte berechnen:"
+      - "&mu;<sub>1</sub> = (1 + 2 + 3) / 3 = 2"
+      - "&mu;<sub>2</sub> = (10 + 11 + 12) / 3 = 11"
+    iteration_two_heading: "Iteration 2"
+    iteration_two_lines:
+      - "Die Center stehen weiterhin auf Position 2 und 11, gleiche Aufgabe."
+      - "Die neuen Zentren sind weiterhin 2 und 11."
+    result: >
+      Ergebnis: Der Algorithmus ist konvergiert. Setze Ställe an den
+      Positionen 2 und 11.
+    alternate_start_heading: "Was wäre, wenn der Ausgangspunkt ein anderer wäre? Versuche es doch einmal mit den Mittelpunkten bei [5, 6]:"
+    alternate_start_lines:
+      - "Aufgabe: C1, C2."
+      - "Neue Zentren landen immer noch bei ."
+    alternate_result: "K-Means findet (meistens) dieselbe gute Lösung, unabhängig davon, wo man beginnt."
+  distance_heading: "Entfernungsmessung"
+  distance_intro: >
+    K-Means verwendet den euklidischen Abstand (geradliniger Abstand):
+  two_dimensional_example:
+    heading: "2D-Beispiel: Cake Stalls auf dem Schulhof. 6 Besucherpositionen (x,y Koordinaten in Metern):"
+    visitor_lines:
+      - "A: (1,2)    B: (2,1)    C: (3,3)"
+      - "D: (10,9)   E: (11,10)  F: (9,11)"
+    setup_line: "K = 2 Stände | Start: C1=(2,2), C2=(10,10)"
+    distance_formula_heading: "Entfernungsformel (Euklidische Distanz)"
+    iteration_one_heading: "Iteration 1"
+    iteration_one_lines:
+      - "Abstände zu C1(2,2): A=1.4, B=1.4, C=2.0, D=11.3, E=12.0, F=12.0"
+      - "Abstände zu C2(10,10):A=11.3,B=12.0,C=10.4,D=1.4,E=1.4,F=2.2"
+      - "Zuordnung:"
+      - "Cluster 1: A,B,C → Neues C1: &mu;<sub>1</sub> = ((1+2+3)/3, (2+1+3)/3) = (2.0, 2.0)"
+      - "Cluster 2: D,E,F → Neues C2: &mu;<sub>2</sub> = ((10+11+9)/3, (9+10+11)/3) = (10.0, 10.0)"
+    iteration_two_heading: "Iteration 2"
+    result: >
+      Konvergiert! Endgültige Stände: (2.0, 2.0) & (10.0, 10.0)
+  dimension_note_heading: "Hinweis zu Dimensionen"
+  dimension_note_body: >
+    Die hier gezeigten Beispiele verwenden ein- oder zweidimensionale Daten, da
+    sie sich leicht visualisieren lassen. In realen Anwendungen bestehen
+    Datenpunkte jedoch oft aus vielen Merkmalen (z. B. Alter, Interessen,
+    Kaufverhalten), sodass sie in einem hochdimensionalen Raum liegen. K-Means
+    funktioniert auch in diesen Fällen, jedoch ist die Struktur der Daten dann
+    nicht mehr direkt sichtbar, sondern muss rechnerisch erschlossen werden.
+exercises:
+  heading: Übungen
+  intro: >
+    Im Folgenden findest du die Standorte der Besucher auf dem Schulgelände. Du
+    musst einige Aufgaben lösen, um die Position der Kuchenstände zu finden.
+  visitors_heading: "6 Besucher andiesen 2D-Positionen:"
+  visitors:
+    - "Besucher 1: (1,2)"
+    - "Besucher 2: (2,1)"
+    - "Besucher 3: (3,3)"
+    - "Besucher 4: (9,10)"
+    - "Besucher 5: (10,9)"
+    - "Besucher 6: (11,11)"
+  distance_helper:
+    heading: "Distanzmatrix selbst berechnen"
+    intro: "Lege eigene Zentren und Datenpunkte fest. Nach dem Klick auf \"Berechnen\" siehst du fuer jeden Punkt die Distanz zu jedem Zentrum."
+    cluster_count_label: "Anzahl der Cluster (k)"
+    centers_heading: "Zentren eingeben"
+    points_heading: "Datenpunkte eingeben"
+    add_point_label: "Datenpunkt hinzufuegen"
+    remove_point_label: "Entfernen"
+    calculate_label: "Berechnen"
+    results_heading: "Distanztabelle"
+    point_column_label: "Datenpunkt"
+    center_label_template: "C{index}"
+    point_label_template: "P{index}"
+    label_column: "Bezeichnung"
+    x_label: "x"
+    y_label: "y"
+    actions_label: "Aktion"
+    validation_missing_coordinates: "Bitte fuelle zuerst alle x- und y-Koordinaten fuer Zentren und Datenpunkte aus."
+    validation_invalid_numbers: "Bitte gib nur gueltige Zahlen fuer alle Koordinaten ein."
+  exercise_blocks:
+    - heading: "Übung 1: Basic Clustering"
+      dataset_intro: "K = 2 Stände und Start-Center:"
+      setup_items:
+        - "C1 = (2,2)"
+        - "C2 = (10,10)"
+      formula_after_task: 3
+      tasks:
+        - Berechne die Entfernung jedes Besuchers zu beiden Zentren.
+        - Ordne jeden Besucher dem nächstgelegenen Zentrum zu. Welche Besucher gehen zu C1? Welche zu C2?
+        - "Berechne die neuen Mittelpunkte anhand der folgenden Formel:"
+        - Führe eine zweite Iteration durch. Ändern sich die Mittelpunkte?
+        - Wo sollen die Kuchenstände aufgestellt werden? Warum?
+    - heading: "Übung 2: Unterschiedliche Ausgangspunkte"
+      dataset_intro: >
+        Derselbe Datensatz. Nun ist K = 2, aber wir beginnen mit ungünstigen
+        Zentren: C1 = (5,5), C2 = (6,6)
+      tasks:
+        - Weisen Sie Besucher den nächstgelegenen Zentren zu.
+        - Berechne die neuen Mittelpunkte nach Iteration 1.
+        - Führe Iteration 2 durch. Was passiert?
+        - "Vergleiche: Hast du am Ende dieselben Endpunkte wie in Übung 1 erhalten?"
+    - heading: "Übung 3: WählenK=3"
+      dataset_intro: "Neuer Datensatz:"
+      setup_items:
+        - "A = (1,1)"
+        - "B = (1,2)"
+        - "C = (2,1)"
+        - "D = (3,3)"
+        - "E = (10,10)"
+        - "F =  (11,10)"
+        - "G = (10,11)"
+        - "H = (12,12)"
+      followup_lines:
+        - "K = 3 Stände"
+        - "Fang einfach irgendwo an (ganz wie du willst)."
+      tasks:
+        - Wähle deine 3 Start-Center aus.
+        - Führe zwei Iterationen durch.
+        - Zeichne die Punkte und die Endpunkte auf Millimeterpapier.
+        - "Diskussion: Inwiefern unterscheiden sich die 3 Cluster von K=2?"
+    - heading: "[Optional] Übung 4: Praktische Anwendung in der Schule"
+      dataset_intro: >
+        Deine Aufgabe: Zeichne einen Plan deines Schulhofs (erstelle eine
+        einfache Skizze).
+      tasks:
+        - Markiere 10 imaginäre Besucherplätze.
+        - Führe K-Means mit K=3 durch.
+        - "Präsentation: „Meine Kuchenstände stehen an den Stellen X, Y und Z, weil …“"
+        - "Gruppenaufgabe: Vergleicht mit euren Klassenkameraden, wessen Stände den Hof am besten abdecken?"

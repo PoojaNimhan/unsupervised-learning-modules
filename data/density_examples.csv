@@ -1,0 +1,12 @@
+point_id,x,y,pattern,is_noise
+A,1.2,7.6,compact,False
+B,1.9,8.4,compact,False
+C,2.6,7.2,compact,False
+D,3.0,8.1,compact,False
+E,4.0,6.1,chain,False
+F,5.2,5.4,chain,False
+G,6.5,4.8,chain,False
+H,7.8,4.2,chain,False
+I,9.1,3.7,chain,False
+J,10.4,3.2,chain,False
+K,11.5,8.9,noise,True

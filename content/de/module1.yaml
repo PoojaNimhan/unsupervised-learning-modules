@@ -1,0 +1,271 @@
+title: "Modul 1: Unueberwachtes Lernen verstehen"
+intro: >
+  In diesem Modul beginnst du mit einer menschlichen Sortieraufgabe und
+  untersuchst danach, wie Computer ohne vorgegebene Etiketten Gruppen erkennen.
+exploration:
+  heading: Erkundung
+  task_intro: >
+    Stell dir vor, du betrittst eine riesige, geheimnisvolle Vorratskammer. 
+    Überall liegen Lebensmittel verstreut, aber es gibt keine Schilder, 
+    keine Regale und keine Namen. Alles ist durcheinander! 
+  drag_instruction: >
+    Schnapp dir die Emojis und ziehe sie per Drag & Drop in zwei verschiedene
+    Boxen. Du hast den Auftrag, selbst Ordnung zu schaffen.
+  group_a_label: Group A
+  group_b_label: Group B
+  unassigned_label: Lebensmittelkarten
+  reset_label: Sortierung zuruecksetzen
+  current_grouping_heading: "Aktuelle manuelle Sortierung"
+  current_grouping_note: >
+    Die Tabelle speichert deine momentane Einteilung, damit sie spaeter mit
+    einer automatischen Gruppierung verglichen werden kann.
+  table_columns:
+    food: Lebensmittel
+    group: Aktuelle Gruppe
+  observation_heading: "Beobachte genau"
+  observation_questions:
+    - Wie hast du entschieden, was wohin kommt? 
+    - Was macht die Dinge in Box 1 so „ähnlich“? 
+    - Worin unterscheiden sie sich von den Dingen in Box 2?  
+  everyday_labels_note: >
+    Wichtig: Ohne irgendwelche weitere Informationen, hast du sie sortiert.
+    Vielleicht hast du instinktiv so sortiert, wie wir es im Alltag gewohnt sind.
+    Aber warum eigentlich? Meistens nutzen wir Namen und Kategorien,
+    die uns schon früher beigebracht wurden, um die Welt zu ordnen.
+    Wir geben den Dingen "Etiketten", damit wir sie sofort wiedererkennen.
+  food_examples:
+    - food_name: apple
+      description: Knackiges Obst mit wenig Fett und mittlerem Zuckergehalt.
+    - food_name: broccoli
+      description: Gruenes Gemuese mit wenig Zucker und vielen Ballaststoffen.
+    - food_name: strawberry
+      description: Suesse Beere mit wenig Kalorien und kaum Fett.
+    - food_name: carrot
+      description: Knackiges Gemuese mit wenig Fett und vielen Ballaststoffen.
+    - food_name: banana
+      description: Suesses Obst mit etwas mehr Zucker und Kalorien als Apfel.
+    - food_name: burger
+      description: Verarbeitetes Fast-Food-Beispiel mit deutlich mehr Fett.
+    - food_name: pizza
+      description: Verarbeitetes Gericht mit mehr Fett und Energie als Obst oder Gemuese.
+    - food_name: donut
+      description: Sehr suesses Gebaeck mit viel Zucker und viel Fett.
+    - food_name: fries
+      description: Frittierte Kartoffelportion mit viel Fett und vielen Kalorien.
+    - food_name: apple_cake
+      description: Dessert mit relativ viel Zucker, Fett und Kalorien.
+structuring:
+  heading: Strukturierung
+  intro: >
+    In der Erkundungsphase hast du Objekte nach deiner Einschätzung ihrer Ähnlichkeit sortiert. 
+    Wenn wir den Sortierprozess aus der Perspektive eines Computerprogramms betrachten, 
+    wie würden die Objekte aus dem vorherigen Teil sortiert werden? 
+  computer_difference:
+    - Ein Computer unterscheidet nicht zwischen „gesund“ und „ungesund“.  
+    - Stattdessen werden messbare Eigenschaften verwendet, also sogenannte Features. 
+  features_intro: "Bei Lebensmitteln könnten Features zum Beispiel sein: "
+  features:
+    - Kalorien (kcal pro 100 g) 
+    - Zucker (g pro 100 g) 
+    - Fett (g pro 100 g)
+    - Ballaststoffe (g pro 100 g)
+  distance_explanation: >
+    Wenn zwei Dinge sich diesen Features ähnlich sind, wirken sie für den Computer „nah beieinander“. 
+    Wenn sie sehr verschieden sind, sind sie „weit auseinander“. Dies ist die Grundidee 
+    hinter der Gruppierung für den Computer. 
+  comparison_table_columns:
+    food_name: Lebensmittel
+    calories_kcal: Kalorien (kcal)
+    sugar_g: Zucker (g)
+    fat_g: Fett (g)
+  apple_vs_donut:
+    heading: "Vergleich: Apfel und Donut"
+    intro: >
+      Stell dir vor, du möchtest verschiedene Lebensmittel miteinander vergleichen, zum Beispiel 
+      einen Apfel und einen Donut. Für den Computer werden keine Formen oder Geschmäcker verarbeitet, 
+      sondern Zahlen, die messbare Eigenschaften darstellen, also sogenannte Merkmale (engl. Features). 
+    explanation: >
+      Wenn wir uns nun das Inhaltsverzeichnis für Apfel und Donut genau ansehen, stellen wir fest, 
+      dass Donuts mehr Kalorien, Zucker und Fett enthalten. Wir werden versuchen, diese Werte zu vergleichen 
+      und Vorhersagen für neue Produkte zu treffen.
+  banana_similarity:
+    heading: "Welche Lebensmittel sind dem Banane am ähnlichsten?"
+    prompt: >
+      Schau dir die Werte der Banane an und ueberlege, welches Lebensmittel ihr
+      bei den Zahlenwerten am naechsten kommt.
+    reference_food: banana
+    reveal_label: "Antwort anzeigen"
+    answer:
+      intro: "Wenn wir uns die Werte anschauen (Zucker, Fett, Kalorien), sehen wir:"
+      items:
+        - Apfel und Banane haben beide wenig Fett, relativ wenig Kalorien und mittleren Zuckergehalt.
+        - Sie liegen von den Zahlen her nahe beieinander.
+      closing: >
+        Für den Computer gehören Apfel und Banane deshalb in eine ähnliche Gruppe,
+        weil ihre messbaren Eigenschaften (Merkmale) ähnlich sind. Die Information,
+        dass es sich bei beiden um Obst handelt, wird dabei nicht verwendet;
+        ausschlaggebend sind lediglich die Ähnlichkeiten in den Zahlenwerten der
+        Merkmale.
+  apple_cake_similarity:
+    heading: "Welche Lebensmittel sind dem Apfelkuchen am ähnlichsten?"
+    prompt: >
+      Betrachte wieder Fett, Zucker und Kalorien. Welches Lebensmittel wirkt bei
+      diesen Werten dem Apfelkuchen am ähnlichsten?
+    reference_food: apple_cake
+    reveal_label: "Antwort anzeigen"
+    answer:
+      intro: "Hier betrachten wir wieder Fett, Zucker und Kalorien:"
+      items:
+        - Apfelkuchen hat deutlich mehr Fett und Kalorien als Obst, und auch relativ viel Zucker.
+        - Donut hat ebenfalls sehr viele Kalorien, viel Fett und viel Zucker.
+      closing: >
+        Für den Computer gehören Apfelkuchen und Donut eher in eine gemeinsame
+        Gruppe, weil sie sich in mehreren Merkmalen ähneln. Auch hier spielen
+        Aussehen oder Geschmack keine Rolle. Für die Gruppierung sind nur die
+        Zahlenwerte der Merkmale entscheidend.
+concept:
+  heading: Fachkonzept
+  pattern_table_heading: "Unterschiedliche Merkmale → unterschiedliche Muster → unterschiedliche Cluster"
+  pattern_table_rows:
+    - Merkmal im Fokus: Zuckergehalt 
+      Sichtbares Muster: Banane und Apfel zusammen. 
+    - Merkmal im Fokus: Fettgehalt 
+      Sichtbares Muster: Donut und Apfelkuchen zusammen. 
+    - Merkmal im Fokus: Kalorien
+      Sichtbares Muster: liegen Donut und Apfelkuchen in einer anderen Ecke des „Raums“
+  central_idea_heading: "Zentrale Idee des unüberwachten Lernens: "
+  central_idea_body:
+    - Computer vergleichen Objekte, indem die Merkmalswerte mathematisch verglichen werden.
+    - Wenn zwei Objekte ähnliche Merkmalswerte haben, liegen sie nah beieinander.
+    - Wenn sich ihre Merkmalswerte stark unterscheiden, liegen sie weiter auseinander.
+    - Die Gruppierung entsteht also nicht durch eine Bezeichnung wie „gesund“ oder „ungesund“.
+    - Sie entsteht durch die messbaren Eigenschaften der Daten.
+  unsupervised_learning_body: >
+    Beim Unüberwachte Lernen (Unsupervised Learning) werden dem Computer keine Kategorien oder richtigen Antworten vorgegeben. 
+    Stattdessen werden Ähnlichkeiten zwischen Objekten anhand ihrer Merkmale berechnet. 
+  system_can_heading: "Ein solches System kann zum Beispiel:"
+  system_can:
+    - title: Neue Daten zu bestehenden Mustern zuordnen 
+      example: "Beispiel: Eine Banane wird als ähnlich zu Obst wie Apfel erkannt.  "
+    - title: Erkennen, wenn etwas nicht passt 
+      example: "Beispiel: Ein Steak unterscheidet sich stark von allen süßen Snacks. "
+    - title: Auffällige oder ungewöhnliche Punkte identifizieren 
+      example: "Beispiel: Apfelkuchen hat Eigenschaften von Obst und Dessert ist also etwas dazwischen."
+  closing_note: >
+    So „entscheidet“ der Computer, ob ein neues Objekt typisch, ähnlich oder ungewöhnlich ist, 
+    ohne dass jemand vorher Kategorier lesgelegt worden sind. 
+exercises:
+  heading: "Übungen: Snack Explorer Abenteuer"
+  intro: >
+    Willkommen, Snack-Explorer! Stell dir vor, du bist ein mutiger Entdecker in der wilden Welt der Snacks! 
+    Deine Mission: Finde heraus, welche Snacks zusammen gehören, ohne dass dir jemand sagt, was „gesund“ oder „ungesund“ ist. 
+    Du hast nur ein Koordinatensystem und Nährwerte. Los geht's! 
+  mission_1:
+    heading: "Mission 1: Die ersten Snacks entdecken"
+    intro: >
+      Deine Ausrüstung: Eine Zauberkarte mit zwei Achsen:
+    axis_setup:
+      - "X-Achse: Zucker (g/100g) je süßer, desto weiter rechts! "
+      - "Y-Achse: Fett (g/100g) je fetthaltiger, desto höher geht es! "
+    table_heading: "Snack-Abenteurer und ihre Koordinaten"
+    chart_note: >
+      In diesem Streudiagramm werden alle vorgegebenen Snacks direkt mit ihren
+      Emojis angezeigt.
+    task_questions:
+      - "Zeichne deine Zauberkarte: X 0-25 (Zucker), Y 0-35 (Fett)."
+      - "Markiere jeden Snack als Punkt (mit Emoji!)."
+      - "Welche Snacks haben sich auf deiner Karte zusammengerottet?"
+  mission_2:
+    heading: "Mission 2: Die geheimen Stämme finden! 🏕️"
+    prompt: >
+      Was siehst du auf deiner Karte? 
+    clans:
+      - title: "Stamm 1: „Die Süßen Talbewohner (rechts unten) "
+        snacks: "🍎 🍌 🍑 🍓"
+        explanation: "Alle süß, aber super leicht (viel Zucker, fast kein Fett!) "
+      - title: "Stamm 2: „Die Fettige Bergclan (links oben) "
+        snacks: "🥔 🥜"
+        explanation: "Super fett, aber gar nicht süß (fast kein Zucker, viel Fett!) "
+    reflection_question: >
+      Frage für Entdecker: Wie wurden diese Snacks gruppiert, ohne dass du Kategorien wie Obst, 
+      Nüsse oder Gemüse angegeben hast?  
+  mission_3:
+    heading: "Mission 3: Verlorene Snacks bergen"
+    intro: >
+      Zwei Snacks sind in der Snack-Welt verloren gegangen. Du musst anhand ihrer Eigenschaften herausfinden, 
+      zu welchen Gruppen sie am ehesten gehören. 
+    examples:
+      - title: "Erster verlorener Snack: Fruchtjoghurt"
+        snack_name: fruit_yogurt
+        details:
+          - "Zucker: 15,0 g/100g | Fett: 3,5 g/100g | Punkt: (15,0 ; 3,5)"
+          - "Markiere den Punkt auf deiner Karte."
+          - "Die Position zeigt, dass dieser Snack zu keiner Gruppe eindeutig gehört. Er liegt zwischen zwei Gruppen."
+      - title: "Zweiter verlorener Snack: Fitness-Riegel"
+        snack_name: fitness_bar
+        details:
+          - "Zucker: 5,0 g/100g | Fett: 15,0 g/100g | Punkt: (5,0 ; 15,0)"
+          - "Markiere den Punkt."
+          - "Auch dieser Snack liegt zwischen zwei Gruppen."
+    clustering_note: >
+      Neue Snacks werden anhand ihrer Merkmalswerte automatisch den aehnlichsten
+      Gruppen zugeordnet.
+  mission_4:
+    heading: "Mission 4: Weisheitsprobe"
+    intro: "Beantworte mit Ja oder Nein: "
+    questions:
+      - id: q1
+        prompt: Der Kompass wusste vorher, dass Äpfel Obst sind. 
+        options:
+          - Ja
+          - Nein
+        correct_option: Nein
+        feedback_correct: >
+          Genau. Es werden nur Zahlenwerte der Merkmale verwendet. 
+        feedback_incorrect: >
+          Nicht ganz. Der Kompass arbeitet nicht mit vorgegebenen Obst-Namen,
+          sondern nur mit Zahlenwerten.
+      - id: q2
+        prompt: Ähnliche Punkte bilden automatisch Gruppen. 
+        options:
+          - Ja
+          - Nein
+        correct_option: Ja
+        feedback_correct: >
+          Richtig. Deshalb rücken Früchte zusammen.  
+        feedback_incorrect: >
+          Doch. Wenn Punkte in den Merkmalswerten nah beieinander liegen,
+          entstehen Gruppen.
+      - id: q3
+        prompt: Neue Snacks kann der Kompass Gruppen zuordnen. 
+        options:
+          - Ja
+          - Nein
+        correct_option: Ja
+        feedback_correct: >
+          Genau. Fruchtjoghurt wird einer Gruppe mit ähnlichen Werten zugeordnet. 
+        feedback_incorrect: >
+          Doch. Neue Beispiele werden ueber ihre Merkmalswerte mit bekannten
+          Mustern verglichen.
+      - id: q4
+        prompt: Snacks zwischen Gruppen sind schwer zuzuordnen. 
+        options:
+          - Ja
+          - Nein
+        correct_option: Ja
+        feedback_correct: >
+          Richtig. Der Fitness-Riegel liegt zwischen mehreren Gruppen. 
+        feedback_incorrect: >
+          Doch. Punkte zwischen Gruppen wirken oft uneindeutig, weil sie zu
+          mehreren Mustern teilweise passen.
+      - id: q5
+        prompt: Gruppen entstehen durch Namen wie 'Chips'. 
+        options:
+          - Ja
+          - Nein
+        correct_option: Nein
+        feedback_correct: >
+          Genau. Gruppen entstehen durch ähnliche Zahlenwerte der Merkmale. 
+        feedback_incorrect: >
+          Noch nicht. Die Namen helfen Menschen, aber fuer den Computer zaehlen
+          die Merkmalswerte.

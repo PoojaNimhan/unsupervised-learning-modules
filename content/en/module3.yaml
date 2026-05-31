@@ -1,0 +1,254 @@
+title: "Module 3: K-Means in the Schoolyard"
+intro: >
+  People are standing at different spots in the schoolyard. Your task is to
+  place cake stands so that walking distances stay short. That is the core idea
+  behind K-Means.
+exploration:
+  heading: Exploration
+  scenario_heading: "Task"
+  scenario: >
+    Your school is organizing a large summer festival. Many classes are baking
+    cakes to sell them and raise money for a class trip. The challenge is:
+  scenario_points:
+    - Everyone wants their cake stand to have a good location.
+    - Visitors should not have to walk too far to buy cake.
+    - There should be enough space between stands so the area does not become too crowded.
+  question_heading: "So the question is"
+  question: >
+    How many cake stands should we set up, and where should we place them in
+    the schoolyard?
+  reflection_heading: "Ask yourself"
+  prompts:
+    - question: "What happens if all stands are next to each other?"
+      answer: "Visitors who are far away may not come because the walk is too long."
+    - question: "What problems could occur if the stands are spread out too far?"
+      answer: "Some stands might not get enough customers."
+  task_heading: "Exploration task"
+  task_steps:
+    - Take a map of the schoolyard (or a simple coordinate grid).
+    - Mark different places where visitors usually come from, for example classrooms, the entrance, or the playground. Each place can be shown as a point on the map.
+    - Now imagine that you only have two or three stands. Where should they be placed so that visitors can easily reach the nearest one?
+structuring:
+  heading: Structuring
+  intro: >
+    In the exploration you saw that visitors or points that are close together
+    naturally form groups. What we are looking for now is a systematic method
+    to find these groups - not only by looking at them, but with the help of a
+    computer and mathematics. This is where K-Means clustering comes in.
+  definition_heading: "What is K-Means?"
+  definition_body: >
+    K-Means is a machine-learning algorithm that automatically divides data
+    points into K groups, called clusters, depending on how close the points
+    are to each other.
+  definition_points:
+    - The "K" stands for the number of groups you want to find.
+    - The term "Means" comes from the mean, because each group is represented by the central (average) position of its members.
+  definition_closing: >
+    You can think of the algorithm as a group finder that looks at many points
+    and says: "These points belong together because they are close to each
+    other."
+  schoolyard_mapping_heading: "At our school festival"
+  mapping_items:
+    - Each visitor = one data point (point).
+    - Each cake stand = one cluster center (the mean).
+    - Using the K-Means method, we can determine where each stand should be placed so that it is close to as many visitors as possible.
+  algorithm_heading: "How K-Means works step by step"
+  algorithm_intro: >
+    Here is the logical process, without mathematical formulas:
+  algorithm_steps:
+    - "Choose K - the number of groups or stands you want to have."
+    - "Place K starting points anywhere (as if you were guessing where the cake stands might be)."
+    - "Assign the visitors to the nearest stand (each visitor goes to the nearest starting point)."
+    - "Move the stand to the average position of its visitors."
+    - "Repeat steps 3 and 4 until no stand moves anymore; then you have found the best positions."
+  stepper:
+    controls:
+      k_label: "How many cake stands should be compared?"
+      preset_label: "Which starting positions do you want to try?"
+      show_labels_label: "Show visitor IDs directly"
+      show_distance_label: "Show distance lines during assignment"
+      initialize_label: "Initialize"
+      assign_label: "Assign"
+      recompute_label: "Recompute centers"
+      next_iteration_label: "Next iteration"
+      reset_label: "Reset"
+      changed_selection_notice: >
+        You changed the selection. Click "Initialize" to restart with the new configuration.
+    status_messages:
+      not_started: "No simulation is active yet. Choose k and starting centers, then initialize the process."
+      initialized: "The starting centers are set. In the next step each point will be assigned to the nearest center."
+      assigned: "All points are assigned to one center. Now you can move the centers to the average positions."
+      recomputed: "The centers have moved. If they still change, the next iteration starts now."
+      stable: "The centers no longer move. The K-Means process has stabilized for this start configuration."
+    summaries:
+      active_config_label: "Active configuration"
+      current_step_label: "Current step"
+      iteration_label: "Iteration"
+      assignments_heading: "Current assignment"
+      centers_heading: "Center table"
+    presets:
+      2:
+        - key: balanced
+          label: "PDF start: balanced centers"
+          description: "The centers begin at C1 = (2,2) and C2 = (10,10)."
+          centers:
+            - [2, 2]
+            - [10, 10]
+        - key: awkward
+          label: "PDF start: awkward centers"
+          description: "The centers begin at C1 = (5,5) and C2 = (6,6) and must readjust."
+          centers:
+            - [5, 5]
+            - [6, 6]
+      3:
+        - key: spaced
+          label: "Three distributed centers"
+          description: "The centers begin from lower left across the diagonal to upper right."
+          centers:
+            - [1, 1]
+            - [6, 6]
+            - [11, 11]
+        - key: diagonal
+          label: "Three diagonal centers"
+          description: "The centers begin closer together and need stronger movement."
+          centers:
+            - [2, 2]
+            - [4, 4]
+            - [8, 8]
+concept:
+  heading: Concept
+  heart_heading: "The mathematical heart of K-Means"
+  heart_intro: >
+    K-Means determines the optimal cluster centers by minimizing the total
+    distance between each point and its assigned center. The algorithm repeats
+    these two steps until the solution stabilizes:
+  heart_steps:
+    - "Step 1: Assign each point to the nearest center."
+    - "Step 2: Move each center to the mean of its assigned points."
+  key_formula_heading: "The key formula"
+  key_formula_note: "(New center point = mean of the positions of all points in the group.)"
+  key_formula_sum_note: "Here, the sum of the x-values means:"
+  symbol_heading: "Explanation of symbols"
+  symbol_items:
+    - "&mu;<sub>j</sub> = new position of cluster center j"
+    - "N<sub>j</sub> = number of points in cluster j"
+    - "C<sub>j</sub> = all points assigned to cluster j"
+    - "x<sub>i</sub> = position of each point i in this cluster"
+    - "&Sigma; = add up all positions"
+  one_dimensional_example:
+    heading: "Calculation for one cake stand"
+    intro: >
+      Scenario: 6 visitors at the positions [1, 2, 3, 10, 11, 12] (on a
+      one-dimensional line representing the schoolyard). We want K = 2 stands.
+    iteration_one_heading: "Iteration 1"
+    iteration_one_lines:
+      - "Start with random centers: C1 = 2, C2 = 11"
+      - "Assign points by distance:"
+      - "Cluster 1: 1, 2, 3 (closest to 2)"
+      - "Cluster 2: 10, 11, 12 (closest to 11)"
+      - "Calculate new centers:"
+      - "&mu;<sub>1</sub> = (1 + 2 + 3) / 3 = 2"
+      - "&mu;<sub>2</sub> = (10 + 11 + 12) / 3 = 11"
+    iteration_two_heading: "Iteration 2"
+    iteration_two_lines:
+      - "The centers are still at positions 2 and 11, same assignment."
+      - "The new centers are still 2 and 11."
+    result: >
+      Result: The algorithm has converged. Place the stands at positions 2 and 11.
+    alternate_start_heading: "What if the start was poor?"
+    alternate_start_lines:
+      - "Try it once with centers at [5, 6]:"
+      - "Task: C1 = 5, C2 = 6."
+      - "The new centers still end up at 2 and 11."
+      - "K-Means (usually) finds the same good solution regardless of where you begin."
+  distance_heading: "Distance measurement"
+  distance_intro: >
+    K-Means uses Euclidean distance (straight-line distance):
+  two_dimensional_example:
+    heading: "2D example: cake stalls in the schoolyard"
+    intro: >
+      6 visitor positions (x,y coordinates in meters):
+    visitor_lines:
+      - "A: (1,2)    B: (2,1)    C: (3,3)"
+      - "D: (10,9)   E: (11,10)  F: (9,11)"
+    setup_line: "K = 2 stands | Start: C1 = (2,2), C2 = (10,10)"
+    distance_formula_heading: "Distance formula (Euclidean distance)"
+    iteration_one_heading: "Iteration 1"
+    iteration_one_lines:
+      - "Distances to C1 (2,2): A = 1.4, B = 1.4, C = 2.0, D = 11.3, E = 12.0, F = 12.0"
+      - "Distances to C2 (10,10): A = 11.3, B = 12.0, C = 10.4, D = 1.4, E = 1.4, F = 2.2"
+      - "Assignment:"
+      - "Cluster 1: A, B, C -> New C1: &mu;<sub>1</sub> = ((1 + 2 + 3) / 3, (2 + 1 + 3) / 3) = (2.0, 2.0)"
+      - "Cluster 2: D, E, F -> New C2: &mu;<sub>2</sub> = ((10 + 11 + 9) / 3, (9 + 10 + 11) / 3) = (10.0, 10.0)"
+    iteration_two_heading: "Iteration 2"
+    result: >
+      Converged! Final stands: (2.0, 2.0) and (10.0, 10.0)
+  dimension_note_heading: "Note on dimensions"
+  dimension_note_body: >
+    The examples shown here use one- or two-dimensional data because they are
+    easy to visualize. In real applications, however, data points often consist
+    of many features (for example age, interests, purchasing behavior), so
+    they lie in a high-dimensional space. K-Means still works in such cases,
+    but the structure of the data is no longer directly visible and must be
+    inferred computationally.
+exercises:
+  heading: Exercises
+  intro: >
+    In the following tasks, you work through the K-Means idea with the revised
+    PDF datasets yourself.
+  distance_helper:
+    heading: "Build your own distance matrix"
+    intro: "Define your own centers and data points. After clicking \"Calculate\", the table shows each point's distance to each center."
+    cluster_count_label: "Number of clusters (k)"
+    centers_heading: "Enter centers"
+    points_heading: "Enter data points"
+    add_point_label: "Add data point"
+    remove_point_label: "Remove"
+    calculate_label: "Calculate"
+    results_heading: "Distance table"
+    point_column_label: "Data point"
+    center_label_template: "C{index}"
+    point_label_template: "P{index}"
+    label_column: "Label"
+    x_label: "x"
+    y_label: "y"
+    actions_label: "Action"
+    validation_missing_coordinates: "Please fill in all x and y coordinates for centers and data points first."
+    validation_invalid_numbers: "Please enter only valid numbers for all coordinates."
+  exercise_blocks:
+    - heading: "Exercise 1: Basic clustering in the schoolyard"
+      dataset_intro: >
+        Six visitors stand at (1,2), (2,1), (3,3), (9,10), (10,9), (11,11).
+        Use K = 2 with starting centers C1 = (2,2) and C2 = (10,10).
+      tasks:
+        - Calculate the distance from each visitor to both centers.
+        - Assign each visitor to the nearest center.
+        - Compute the new mean positions of both groups.
+        - Run a second iteration and check whether anything still changes.
+        - Explain where the cake stands should finally be placed.
+    - heading: "Exercise 2: Poor starting points"
+      dataset_intro: >
+        Use the same dataset again, but now start with C1 = (5,5) and C2 = (6,6).
+      tasks:
+        - Assign each visitor to the nearest center.
+        - Compute the new centers after iteration 1.
+        - Run iteration 2 and observe how the centers move.
+        - Compare the final result with Exercise 1.
+    - heading: "Exercise 3: Choose K = 3"
+      dataset_intro: >
+        New dataset: A(1,1), B(1,2), C(2,1), D(3,3), E(10,10), F(11,10),
+        G(10,11), H(12,12). Choose K = 3 and set three starting centers.
+      tasks:
+        - Write down your three starting centers.
+        - Run two iterations manually.
+        - Draw the points and final centers on paper.
+        - Discuss how three clusters differ from the K = 2 solution.
+    - heading: "Optional Exercise 4: Your own schoolyard plan"
+      dataset_intro: >
+        Sketch your own schoolyard, mark ten imagined visitor positions and run
+        K-Means with K = 3.
+      tasks:
+        - Mark ten plausible visitor positions.
+        - Choose three starting centers.
+        - Explain after two iterations why your cake stands are well distributed.
+        - Compare your solution with another student or group.

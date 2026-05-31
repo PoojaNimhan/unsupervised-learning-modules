@@ -1,0 +1,216 @@
+title: "Modul 2: Das Unbekannte kartografieren (Clusterbildung)"
+intro: >
+  In diesem Modul untersuchst du, wie Immobilien anhand ihrer messbaren
+  Eigenschaften in Cluster eingeteilt werden koennen. Dabei wird sichtbar, dass
+  die Auswahl der Merkmale bestimmt, was als aehnlich gilt.
+exploration:
+  heading: Erkundung
+  feature_heading: "Der Einfluss von Merkmalen auf Cluster"
+  intro: >
+    Diese Übung veranschaulicht, wie die Auswahl der Merkmale bestimmt, wie
+    sich Datenpunkte zu Clustern zusammenfassen. Ein und derselbe Datensatz kann
+    sehr unterschiedliche Cluster ergeben, je nachdem, welche Variablen
+    verglichen werden.
+  dataset_intro: >
+    Der Datensatz enthält 10 Immobilienanzeigen, die jeweils beschreibende
+    Attribute und numerische Werte aufweisen.
+  table_heading: "Immobilienanzeigen und ihre Merkmale"
+  interactive_heading: "Interaktive Merkmalsauswahl"
+  interactive_intro: >
+    Die Streamlit-Anwendung ermöglicht es, die im Streudiagramm verwendeten
+    Variablen umzuschalten.
+  x_axis_options: "Optionen für die X-Achse: Fläche, Zimmer, Preis"
+  y_axis_options: "Optionen für die Y-Achse: Zimmer, Preis, Zustand"
+  controls:
+    x_axis_label: "Welche Eigenschaft soll auf der X-Achse liegen?"
+    y_axis_label: "Welche Eigenschaft soll auf der Y-Achse liegen?"
+    highlight_outlier_label: "Ruine gezielt hervorheben"
+  axis_labels:
+    area_sqm: "Fläche (m²)"
+    rooms: "Zimmer"
+    price_eur: "Preis (€)"
+    condition_score: "Zustand"
+  axis_summary_template: "Aktuelle Ansicht: {x_axis} auf der X-Achse und {y_axis} auf der Y-Achse."
+  chart_caption: >
+    Jede Kombination bietet eine andere analytische Perspektive. Durch die
+    Beobachtung, wie sich die Punkte unter verschiedenen Merkmalspaaren
+    gruppieren, wird deutlich, dass die Definition von „Ähnlichkeit“
+    vollständig davon abhängt, welche Dimensionen verglichen werden.
+  outlier_annotation_label: "Ruine"
+  outlier_default_note: >
+    Eintrag 9 faellt in fast jeder Darstellung auf. Mit der Hervorhebung kannst
+    du genauer untersuchen, warum diese Immobilie als Ausreißer erscheint.
+  outlier_explanation_template: >
+    Eintrag 9 kombiniert in dieser Ansicht {x_label} = {x_value} mit
+    {y_label} = {y_value}. Gerade diese Mischung aus großer Fläche, niedrigem
+    Zustand und relativ niedrigem Preis macht die Ruine auffällig.
+  observation_heading: "Beispielbeobachtungen"
+  observations:
+    - "Fläche vs. Preis: Größere Häuser weisen entlang eines allmählichen Aufwärtstrends höhere Preise auf."
+    - "Zimmer vs. Zustand: Immobilien unterscheiden sich möglicherweise eher nach Qualität als nach Größe."
+    - "Eintrag 9 (Die Ruine): Bei der Darstellung erscheint diese Immobilie durchweg als Ausreißer, da sie eine große Fläche mit einem niedrigen Preis und einem schlechten Zustand kombiniert."
+structuring:
+  heading: Strukturierung
+  intro: >
+    In diesem Abschnitt werden die Clusteranzahl k und die Rolle von
+    Ausreißern in der Clusteranalyse eingefuehrt. Entscheidend ist, wie sich
+    Gruppen aendern, wenn k angepasst wird und wie deutlich abweichende
+    Punkte behandelt werden.
+  dataset_intro: >
+    Zur Veranschaulichung wird ein kleiner, skalierter Datensatz mit zehn
+    Immobilien verwendet. Jede Einheit auf den Achsen entspricht Wohnbereich
+    1 = 50 m² und Preis 1 = 100.000 €.
+  table_heading: "Vereinfachter Datensatz"
+  comparison_heading: "Interaktive Aufgabe: Anpassen der Clusteranzahl"
+  comparison_intro: >
+    Vergleiche, wie sich dieselben Daten bei k = 2 und k = 3 veraendern. So
+    wird sichtbar, wie sich grobe und feinere Gruppierungen unterscheiden.
+  k_labels:
+    2: "k = 2: grobe Gruppierung"
+    3: "k = 3: feinere Gruppierung"
+  group_summary_template: "Clustergrößen: {group_sizes}"
+  k_explanations:
+    - heading: "k = 2"
+      bullets:
+        - Der Algorithmus teilt die Objekte in zwei grosse Cluster auf.
+        - Studios bilden einen Cluster.
+        - Einfamilienhaeuser und Luxusvillen verschmelzen zu einer einzigen, allgemeinen Gruppe.
+    - heading: "k = 3"
+      bullets:
+        - Die Unterteilung wird detaillierter.
+        - "Cluster 1: Preisguenstige Immobilien (Studios)"
+        - "Cluster 2: Einfamilienhaeuser im mittleren Preissegment"
+        - "Cluster 3: Hochpreisige Luxusvillen"
+  outlier_heading: "Erkennung von Ausreißern"
+  outlier_body: >
+    Das Geisterhaus (Bereich 10, Preis 0,5) liegt weit entfernt von anderen
+    Datenpunkten. Wuerde man es in einen Cluster einbeziehen, wuerde dies die
+    Berechnung der Clusterzentren und der Cluster-Durchschnittswerte
+    verfaelschen. Es handelt sich um einen Ausreißer, einen Datenpunkt, der
+    nicht zugeordnet werden sollte, da sich seine Eigenschaften erheblich von
+    denen der uebrigen Datenpunkte unterscheiden.
+  k_table_heading: "Wie verändern sich die Gruppenzuordnungen?"
+  k_table_note: >
+    Vergleiche, wie dieselben Punkte bei k = 3 feiner aufgeteilt werden als bei k = 2.
+  principles_heading: "Grundprinzipien"
+  principles:
+    - Der Parameter k bestimmt die Granularität der Gruppierung.
+    - "Zu klein (k = 1): Alle Daten in einem Cluster, keine Erkenntnisse."
+    - "Zu groß (k = 10): Jeder Punkt wird isoliert, keine Verallgemeinerung."
+    - Ausreißer sind Werte, die weit außerhalb der Clusterbereiche liegen.
+    - Eine geeignete Wahl von k schafft ein Gleichgewicht zwischen Einfachheit und Genauigkeit und deckt Muster auf, die interpretierbar und aussagekräftig sind.
+concept:
+  heading: Fachkonzept
+  intro: >
+    In diesem Abschnitt wird erläutert, wie Clustering-Algorithmen den
+    Datenraum unterteilen. Die Unterteilungslogik folgt bestimmten
+    geometrischen Regeln, die darauf basieren, wie die Abstaende zwischen
+    Datenpunkten und Zentren gemessen werden. Der Schwerpunkt liegt auf dem
+    Verständnis linearer Grenzen, kreisförmiger Grenzen und der Auswirkung der
+    gewählten Clusteranzahl k
+  sections:
+    - title: "1. Border Patrol (lineare Grenzen / Voronoi-Logik)"
+      groups:
+        - label: "Konzept:"
+          paragraphs:
+            - "Der Algorithmus vergleicht die Abstände zwischen Datenpunkten und Clusterzentren."
+            - "Eine gerade Linie (oder in höheren Dimensionen eine Hyperfläche) wird exakt zwischen zwei Zentren gezogen."
+            - "Punkte auf der einen Seite gehören zu Cluster A; Punkte auf der anderen Seite gehören zu Cluster B."
+        - label: "Analogie:"
+          paragraphs:
+            - "Ähnlich wie beim Zeichnen einer Grenze zwischen zwei Regionen, wobei die Grenze den gleichen Abstand zu beiden Zentren darstellt."
+        - label: "Ergebnis:"
+          paragraphs:
+            - "Gruppen werden durch lineare Trennlinien voneinander getrennt, wodurch polygonförmige Bereiche auf der Datenkarte entstehen."
+    - title: "2. Expandierende Wellen (kreisförmige Grenzen)"
+      groups:
+        - label: "Konzept:"
+          paragraphs:
+            - "Jedes Clusterzentrum fungiert als Expansionspunkt."
+            - "Ein Kreis dehnt sich vom Schwerpunkt aus nach außen aus."
+            - "Jeder Punkt innerhalb des Radius gehört zu diesem Cluster."
+        - label: "Mehrere Cluster:"
+          paragraphs:
+            - "Wenn sich Kreise ausdehnen und treffen, bildet der Berührungspunkt die Grenze zwischen zwei benachbarten Clustern."
+            - "Diese Methode führt zu abgerundeten Clusterregionen anstelle von geraden Grenzen."
+    - title: "3. Determining the Number of Clusters k"
+      groups:
+        - label: "Definition:"
+          paragraphs:
+            - "k steht für die Gesamtzahl der vom Algorithmus definierten Cluster."
+        - label: "Auswirkungen unterschiedlicher Werte:"
+          items:
+            - "Wenige Cluster ( k = 1) → minimale Unterscheidung; alle Daten werden zu einem Bereich zusammengefasst."
+            - "Kleines k → wenige, größere Cluster; Unterschiede zwischen Datenpunkten werden nur grob erfasst."
+            - "Großes k → viele, kleinere Cluster, die Daten werden feiner unterteilt, wobei die Gefahr einer zu starken Aufspaltung besteht."
+            - "Geeignetes k → eine sinnvolle Gruppierung, bei der die wesentliche Struktur der Daten sichtbar wird, ohne unnötige Komplexität zu erzeugen."
+        - label: "Ziel:"
+          paragraphs:
+            - "Ermittlung des optimalen Werts von k, bei dem die Cluster die wesentliche Struktur erfassen, ohne unnötige Komplexität zu erzeugen."
+  applications_heading: "Anwendungen in der Praxis"
+  applications_intro: "Beispiele für Clustering-Anwendungen sind:"
+  applications:
+    - Produktsegmentierung im Lebensmitteleinzelhandel (z. B. Bio-, Budget- und Premium-Kategorien).
+    - Zielgruppenbildung bei Streaming-Empfehlungen (Sehgewohnheiten, Genres, Häufigkeit).
+exercises:
+  heading: Übungen
+  intro: >
+    Dieser Abschnitt enthält praktische Übungen zur Anwendung der
+    Clustering-Prinzipien anhand einer einfachen geometrischen Interpretation.
+    Jede Aufgabe verdeutlicht, wie sich Cluster durch Grenzen und Kreise bilden
+    und wie Ausreißer erkannt werden.
+  dataset_heading: "Aufgabe 1: Der Nachbarschaftsplaner"
+  dataset_intro: >
+    Es wird ein Datensatz mit zehn Häusern bereitgestellt. Jedes Haus wird als
+    Punkt auf einer zweidimensionalen Karte dargestellt:
+  table_columns:
+    - Haus
+    - Wohnbereich
+    - Preis
+  table_rows:
+    - [A, "1", "2"]
+    - [B, "2", "2"]
+    - [C, "2", "3"]
+    - [D, "5", "5"]
+    - [E, "6", "6"]
+    - [F, "5", "6"]
+    - [G, "9", "9"]
+    - [H, "10", "10"]
+    - [I, "9", "10"]
+    - [J, "9", "1"]
+  axis_note: "Jede Einheit auf den Achsen entspricht einer Fläche von 1 = 50 m² und einem Preis von 1 = 100.000 €."
+  tabs:
+    line:
+      label: "Aufgabe A - Teile die Stadt"
+      items:
+        - "Zeichne eine gerade Linie, die die Häuser in zwei Gruppen unterteilt: erschwingliche und teure."
+        - "Die Linie verläuft typischerweise zwischen den Koordinaten (3, 3) und (6, 6)."
+        - "Dadurch entsteht eine lineare Grenze, die zeigt, wie der Merkmalsraum in zwei Bereiche unterteilt werden kann."
+    circles:
+      label: "Aufgabe B - Entdecke die Stadtviertel"
+      intro: >
+        Da nun drei Cluster definiert werden dürfen, können kreisförmige Grenzen
+        um dichte Punktgruppen gezogen werden.
+      clusters:
+        - "Cluster 1: Einsteigerhäuser (A, B, C)"
+        - "Cluster 2: Einfamilienhäuser (D, E, F)"
+        - "Cluster 3: Luxusimmobilien (G, H, I)"
+      paragraphs:
+        - "Jeder Kreis stellt einen Cluster dar, dessen Schwerpunkt ungefähr in der Mitte der Gruppe liegt."
+        - "Wo sich zwei Kreise berühren, entsteht eine natürliche Grenze zwischen den Clustern."
+        - "Dies veranschaulicht, wie sich Cluster eher um Zentren herum als entlang gerader Trennlinien bilden können."
+    outlier:
+      label: "Aufgabe 2 - Identifizieren Sie den Ausreißer"
+      intro: >
+        Sehen Sie sich die Datenpunkte noch einmal an, um den Wert zu finden,
+        der nicht dem beobachteten Muster entspricht.
+      items:
+        - "Punkt J (9, 1) vereint eine große Wohnfläche mit einem ungewöhnlich niedrigen Preis."
+        - "Dieser Punkt liegt weit entfernt vom Luxuscluster (G, H, I) und lässt sich nicht nahtlos einer Gruppe zuordnen."
+        - "Solche Punkte werden als Ausreißer bezeichnet, da ihre Eigenschaften erheblich von der allgemeinen Verteilung abweichen."
+  key_takeaways_heading: "Wichtige Erkenntnisse"
+  key_takeaways:
+    - Lineare Grenzen unterteilen den Raum durch den Vergleich von Abständen.
+    - Zirkuläre Nachbarschaften gruppieren Daten um einen Schwerpunkt.
+    - Ausreißer sind Ausnahmefälle, die nicht zugeordnet werden sollten.
+    - Clustering deckt Strukturen auf, doch müssen ungewöhnliche Fälle erkannt werden, um die Genauigkeit zu gewährleisten.
