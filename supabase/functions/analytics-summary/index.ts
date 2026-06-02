@@ -1,5 +1,11 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const ALLOWED_ORIGINS = new Set([
+  "http://127.0.0.1:4173",
+  "http://127.0.0.1:5174",
+  "https://bespoke-sprinkles-1d8a52.netlify.app",
+]);
+
 function corsHeaders(origin: string | null) {
   return {
     "Access-Control-Allow-Origin": origin ?? "null",
@@ -9,19 +15,8 @@ function corsHeaders(origin: string | null) {
   };
 }
 
-function normalizeAllowedOrigin(value: string) {
-  const trimmed = value.trim();
-  if (!trimmed) return "";
-  if (trimmed.includes("://")) return trimmed;
-  return `https://${trimmed}`;
-}
-
 function isOriginAllowed(origin: string | null) {
-  const allowed = (Deno.env.get("ALLOWED_ORIGINS") ?? "")
-    .split(",")
-    .map(normalizeAllowedOrigin)
-    .filter(Boolean);
-  return Boolean(origin && allowed.includes(origin));
+  return Boolean(origin && ALLOWED_ORIGINS.has(origin));
 }
 
 function jsonResponse(status: number, body: Record<string, unknown>, origin: string | null) {

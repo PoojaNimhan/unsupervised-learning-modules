@@ -24,9 +24,10 @@ would point back to the Edge Runtime container instead of Supabase Kong.
 Do not use `SUPABASE_` prefixes in `supabase/.env.local`; the Supabase CLI
 reserves that namespace and skips those keys when serving Edge Functions.
 
-`ALLOWED_ORIGINS` accepts a comma-separated list of exact origins only. Add each
-deployed learner or dashboard URL explicitly, for example
-`https://bespoke-sprinkles-1d8a52.netlify.app`.
+Allowed browser origins are currently defined directly in the two Edge Function
+files. If you change the learner or dashboard host URL, update the allowlist in
+`supabase/functions/analytics-event/index.ts` and
+`supabase/functions/analytics-summary/index.ts`, then redeploy both functions.
 
 ## Start Local Services
 

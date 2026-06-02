@@ -3,6 +3,11 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const MAX_BODY_BYTES = 64 * 1024;
 const MAX_BATCH_SIZE = 25;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const ALLOWED_ORIGINS = new Set([
+  "http://127.0.0.1:4173",
+  "http://127.0.0.1:5174",
+  "https://bespoke-sprinkles-1d8a52.netlify.app",
+]);
 const ALLOWED_EVENTS = new Set([
   "session_start",
   "session_heartbeat",
@@ -43,19 +48,8 @@ function corsHeaders(origin: string | null) {
   };
 }
 
-function normalizeAllowedOrigin(value: string) {
-  const trimmed = value.trim();
-  if (!trimmed) return "";
-  if (trimmed.includes("://")) return trimmed;
-  return `https://${trimmed}`;
-}
-
 function isOriginAllowed(origin: string | null) {
-  const allowed = (Deno.env.get("ALLOWED_ORIGINS") ?? "")
-    .split(",")
-    .map(normalizeAllowedOrigin)
-    .filter(Boolean);
-  return Boolean(origin && allowed.includes(origin));
+  return Boolean(origin && ALLOWED_ORIGINS.has(origin));
 }
 
 function jsonResponse(status: number, body: Record<string, unknown>, origin: string | null) {
