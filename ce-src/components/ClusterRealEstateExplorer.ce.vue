@@ -65,6 +65,24 @@ function pointTitle(listing) {
           {{ content.exploration.controls.highlight_outlier_label }}
         </label>
       </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Anzeige</th>
+            <th>Fläche</th>
+            <th>Zimmer</th>
+            <th>Preis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="listing in listings" :key="listing.listing_id">
+            <td>{{ listing.display_name }}</td>
+            <td>{{ listing.area_sqm }}</td>
+            <td>{{ listing.rooms }}</td>
+            <td>{{ formatPriceEur(listing.price_eur) }}</td>
+          </tr>
+        </tbody>
+      </table>
       <BaseScatterPlot
         :points="listings"
         :x-key="xAxis"
@@ -135,7 +153,25 @@ function pointTitle(listing) {
 
     <div class="card">
       <h4>{{ content.exercises.dataset_heading }}</h4>
-      <div class="tabs">
+      <p>{{ content.exercises.dataset_intro }}</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>{{ content.exercises.table_columns[0] }}</th>
+            <th>{{ content.exercises.table_columns[1] }}</th>
+            <th>{{ content.exercises.table_columns[2] }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="house in neighborhood" :key="house.house_id">
+            <td>{{ house.house_id }}</td>
+            <td>{{ house.living_area_unit }}</td>
+            <td>{{ house.price_unit }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="caption">{{ content.exercises.axis_note }}</p>
+      <div class="tabs plot-tabs">
         <button
           v-for="tab in ['line', 'circles', 'outlier']"
           :key="tab"
@@ -145,7 +181,28 @@ function pointTitle(listing) {
           {{ content.exercises.tabs[tab].label }}
         </button>
       </div>
-      <p>{{ content.exercises.tabs[activeExerciseTab].body }}</p>
+      <p v-if="content.exercises.tabs[activeExerciseTab].instruction" class="instruction">
+        {{ content.exercises.tabs[activeExerciseTab].instruction }}
+      </p>
+      <p v-if="content.exercises.tabs[activeExerciseTab].intro">
+        {{ content.exercises.tabs[activeExerciseTab].intro }}
+      </p>
+      <ul v-if="content.exercises.tabs[activeExerciseTab].items">
+        <li v-for="item in content.exercises.tabs[activeExerciseTab].items" :key="item">
+          {{ item }}
+        </li>
+      </ul>
+      <ul v-if="content.exercises.tabs[activeExerciseTab].clusters">
+        <li v-for="cluster in content.exercises.tabs[activeExerciseTab].clusters" :key="cluster">
+          {{ cluster }}
+        </li>
+      </ul>
+      <p
+        v-for="paragraph in content.exercises.tabs[activeExerciseTab].paragraphs || []"
+        :key="paragraph"
+      >
+        {{ paragraph }}
+      </p>
       <BaseScatterPlot
         :points="linePoints"
         x-key="living_area_unit"
@@ -159,7 +216,8 @@ function pointTitle(listing) {
       >
         <template #default="{ scaleX, scaleY }">
           <template v-if="activeExerciseTab === 'line'">
-            <line :x1="scaleX(3)" :x2="scaleX(6)" :y1="scaleY(3)" :y2="scaleY(6)" class="separator" />
+            <line :x1="scaleX(0)" :x2="scaleX(7.5)" :y1="scaleY(7.5)" :y2="scaleY(0)" class="separator" />
+            <line :x1="scaleX(5)" :x2="scaleX(10)" :y1="scaleY(10)" :y2="scaleY(5)" class="separator" />
           </template>
           <template v-if="activeExerciseTab === 'circles'">
             <circle :cx="scaleX(1.7)" :cy="scaleY(2.3)" :r="42" class="area" />
@@ -173,7 +231,7 @@ function pointTitle(listing) {
               r="7"
               :fill="activeExerciseTab === 'outlier' && house.is_outlier ? '#dc2626' : '#2563eb'"
             />
-            <text :x="scaleX(house.living_area_unit) + 8" :y="scaleY(house.price_unit) - 6" class="annotation">
+            <text :x="scaleX(house.living_area_unit) + 8" :y="scaleY(house.price_unit) - 6" class="annotation neighborhood-label">
               {{ house.house_id }}
             </text>
           </g>
@@ -181,25 +239,6 @@ function pointTitle(listing) {
       </BaseScatterPlot>
       <p class="caption">{{ content.exercises.tabs[activeExerciseTab].takeaway }}</p>
     </div>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Anzeige</th>
-          <th>Fläche</th>
-          <th>Zimmer</th>
-          <th>Preis</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="listing in listings" :key="listing.listing_id">
-          <td>{{ listing.display_name }}</td>
-          <td>{{ listing.area_sqm }}</td>
-          <td>{{ listing.rooms }}</td>
-          <td>{{ formatPriceEur(listing.price_eur) }}</td>
-        </tr>
-      </tbody>
-    </table>
   </section>
 </template>
 
@@ -257,6 +296,15 @@ function pointTitle(listing) {
   color: #9a3412;
 }
 
+.instruction {
+  color: #18324c;
+  font-weight: 600;
+}
+
+.neighborhood-label {
+  font-size: 50%;
+}
+
 .separator {
   stroke: #0f172a;
   stroke-width: 2;
@@ -272,6 +320,7 @@ function pointTitle(listing) {
 .table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 1rem;
 }
 
 .table th,

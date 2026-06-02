@@ -66,8 +66,8 @@ structuring:
     Vergleiche, wie sich dieselben Daten bei k = 2 und k = 3 veraendern. So
     wird sichtbar, wie sich grobe und feinere Gruppierungen unterscheiden.
   k_labels:
-    2: "k = 2: grobe Gruppierung"
-    3: "k = 3: feinere Gruppierung"
+    2: "Anzahl der Cluster (k) = 2: grobe Gruppierung"
+    3: "Anzahl der Cluster (k) = 3: feinere Gruppierung"
   group_summary_template: "Clustergrößen: {group_sizes}"
   k_explanations:
     - heading: "k = 2"
@@ -161,40 +161,46 @@ exercises:
     und wie Ausreißer erkannt werden.
   dataset_heading: "Aufgabe 1: Der Nachbarschaftsplaner"
   dataset_intro: >
-    Es wird ein Datensatz mit zehn Häusern bereitgestellt. Jedes Haus wird als
-    Punkt auf einer zweidimensionalen Karte dargestellt:
+    Untersuche die zehn Immobilienanzeigen in der Tabelle und vergleiche ihre
+    Lage im Koordinatensystem. Überlege, welche Punkte nah beieinanderliegen
+    und wie du sinnvolle Gruppen voneinander trennen würdest.
   table_columns:
-    - Haus
+    - Anzeige
     - Wohnbereich
     - Preis
   table_rows:
-    - [A, "1", "2"]
-    - [B, "2", "2"]
-    - [C, "2", "3"]
-    - [D, "5", "5"]
-    - [E, "6", "6"]
-    - [F, "5", "6"]
-    - [G, "9", "9"]
-    - [H, "10", "10"]
-    - [I, "9", "10"]
-    - [J, "9", "1"]
+    - ["Ad 1", "1", "2"]
+    - ["Ad 2", "2", "2"]
+    - ["Ad 3", "2", "3"]
+    - ["Ad 4", "5", "5"]
+    - ["Ad 5", "6", "6"]
+    - ["Ad 6", "5", "6"]
+    - ["Ad 7", "9", "9"]
+    - ["Ad 8", "10", "10"]
+    - ["Ad 9", "9", "10"]
+    - ["Ad 10", "9", "1"]
   axis_note: "Jede Einheit auf den Achsen entspricht einer Fläche von 1 = 50 m² und einem Preis von 1 = 100.000 €."
   tabs:
     line:
       label: "Aufgabe A - Teile die Stadt"
+      instruction: >
+        Zeichne gedanklich gerade Trennlinien ein, um die Datenpunkte in
+        sinnvolle Bereiche zu unterteilen. So entwickelst du ein Gefühl dafür,
+        wie man Punktgruppen im Koordinatensystem mit Linien voneinander
+        abgrenzt.
       items:
-        - "Zeichne eine gerade Linie, die die Häuser in zwei Gruppen unterteilt: erschwingliche und teure."
-        - "Die Linie verläuft typischerweise zwischen den Koordinaten (3, 3) und (6, 6)."
-        - "Dadurch entsteht eine lineare Grenze, die zeigt, wie der Merkmalsraum in zwei Bereiche unterteilt werden kann."
+        - "Zeichne gerade Linien, die die Häuser in sinnvolle Gruppen unterteilen."
+        - "Eine mögliche Lösung setzt eine Trennlinie zwischen den Anzeigen Ad 1, Ad 2, Ad 3 und Ad 4, Ad 5, Ad 6 sowie eine weitere zwischen Ad 4, Ad 5, Ad 6 und Ad 7, Ad 8, Ad 9."
+        - "So wird sichtbar, wie lineare Grenzen Punktgruppen im Merkmalsraum voneinander abtrennen können."
     circles:
       label: "Aufgabe B - Entdecke die Stadtviertel"
       intro: >
         Da nun drei Cluster definiert werden dürfen, können kreisförmige Grenzen
         um dichte Punktgruppen gezogen werden.
       clusters:
-        - "Cluster 1: Einsteigerhäuser (A, B, C)"
-        - "Cluster 2: Einfamilienhäuser (D, E, F)"
-        - "Cluster 3: Luxusimmobilien (G, H, I)"
+        - "Cluster 1: Einsteigerhäuser (Ad 1, Ad 2, Ad 3)"
+        - "Cluster 2: Einfamilienhäuser (Ad 4, Ad 5, Ad 6)"
+        - "Cluster 3: Luxusimmobilien (Ad 7, Ad 8, Ad 9)"
       paragraphs:
         - "Jeder Kreis stellt einen Cluster dar, dessen Schwerpunkt ungefähr in der Mitte der Gruppe liegt."
         - "Wo sich zwei Kreise berühren, entsteht eine natürliche Grenze zwischen den Clustern."
@@ -205,8 +211,8 @@ exercises:
         Sehen Sie sich die Datenpunkte noch einmal an, um den Wert zu finden,
         der nicht dem beobachteten Muster entspricht.
       items:
-        - "Punkt J (9, 1) vereint eine große Wohnfläche mit einem ungewöhnlich niedrigen Preis."
-        - "Dieser Punkt liegt weit entfernt vom Luxuscluster (G, H, I) und lässt sich nicht nahtlos einer Gruppe zuordnen."
+        - "Ad 10 (9, 1) vereint eine große Wohnfläche mit einem ungewöhnlich niedrigen Preis."
+        - "Dieser Punkt liegt weit entfernt vom Luxuscluster (Ad 7, Ad 8, Ad 9) und lässt sich nicht nahtlos einer Gruppe zuordnen."
         - "Solche Punkte werden als Ausreißer bezeichnet, da ihre Eigenschaften erheblich von der allgemeinen Verteilung abweichen."
   key_takeaways_heading: "Wichtige Erkenntnisse"
   key_takeaways:

@@ -41,6 +41,22 @@ function answerQuestion(id, value) {
     <div class="card">
       <h4>{{ content.exercises.mission_1.heading }}</h4>
       <p>{{ content.exercises.mission_1.intro }}</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Snack-Abenteurer</th>
+            <th>Zucker</th>
+            <th>Fett</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="snack in predefinedSnacks" :key="snack.snack_name">
+            <td>{{ snackLabel(snack) }}</td>
+            <td>{{ snack.sugar_g }}</td>
+            <td>{{ snack.fat_g }}</td>
+          </tr>
+        </tbody>
+      </table>
       <BaseScatterPlot
         :points="snacks"
         x-key="sugar_g"
@@ -113,23 +129,6 @@ function answerQuestion(id, value) {
         </p>
       </article>
     </div>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Snack-Abenteurer</th>
-          <th>Zucker</th>
-          <th>Fett</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="snack in predefinedSnacks" :key="snack.snack_name">
-          <td>{{ snackLabel(snack) }}</td>
-          <td>{{ snack.sugar_g }}</td>
-          <td>{{ snack.fat_g }}</td>
-        </tr>
-      </tbody>
-    </table>
   </section>
 </template>
 

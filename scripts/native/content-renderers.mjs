@@ -185,7 +185,6 @@ export function renderModule1Page(content) {
     ]),
     paragraph("Damit wird sichtbar:"),
     `<h4>${escapeHtml(content.concept.pattern_table_heading)}</h4>`,
-    paragraph("(Different features → different patterns → different clusters.)"),
     simpleTable(
       ["Merkmal im Fokus", "Sichtbares Muster"],
       content.concept.pattern_table_rows.map((row) => [

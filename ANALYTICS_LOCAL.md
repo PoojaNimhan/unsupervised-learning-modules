@@ -24,6 +24,11 @@ would point back to the Edge Runtime container instead of Supabase Kong.
 Do not use `SUPABASE_` prefixes in `supabase/.env.local`; the Supabase CLI
 reserves that namespace and skips those keys when serving Edge Functions.
 
+`ALLOWED_ORIGINS` accepts a comma-separated list of exact origins and wildcard
+subdomains. Wildcards should match the real browser origin, for example
+`https://*.netlify.app` for Netlify deploy URLs. `*.netlify.com` will not match
+the learner site origin.
+
 ## Start Local Services
 
 Terminal 1:

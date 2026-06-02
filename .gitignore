@@ -1,0 +1,12 @@
+node_modules/
+
+dist/
+dist-analytics-dashboard/
+generated/
+
+.DS_Store
+
+.netlify/
+
+supabase/.env.local
+supabase/.temp/*

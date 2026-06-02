@@ -43,12 +43,36 @@ function corsHeaders(origin: string | null) {
   };
 }
 
+function normalizeAllowedOrigin(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (trimmed.includes("://")) return trimmed;
+  return `https://${trimmed}`;
+}
+
+function originMatchesPattern(origin: string, pattern: string) {
+  if (!pattern.includes("*")) return origin === pattern;
+
+  try {
+    const originUrl = new URL(origin);
+    const patternUrl = new URL(pattern);
+    if (originUrl.protocol !== patternUrl.protocol) return false;
+    if (originUrl.port !== patternUrl.port) return false;
+    const wildcardPrefix = "*.";
+    if (!patternUrl.hostname.startsWith(wildcardPrefix)) return false;
+    const suffix = patternUrl.hostname.slice(wildcardPrefix.length);
+    return originUrl.hostname === suffix || originUrl.hostname.endsWith(`.${suffix}`);
+  } catch {
+    return false;
+  }
+}
+
 function isOriginAllowed(origin: string | null) {
   const allowed = (Deno.env.get("ALLOWED_ORIGINS") ?? "")
     .split(",")
-    .map((value) => value.trim())
+    .map(normalizeAllowedOrigin)
     .filter(Boolean);
-  return Boolean(origin && allowed.includes(origin));
+  return Boolean(origin && allowed.some((pattern) => originMatchesPattern(origin, pattern)));
 }
 
 function jsonResponse(status: number, body: Record<string, unknown>, origin: string | null) {
