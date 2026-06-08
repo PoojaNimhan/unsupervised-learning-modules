@@ -7,6 +7,7 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:4173",
   "http://127.0.0.1:5174",
   "https://bespoke-sprinkles-1d8a52.netlify.app",
+  "https://softech-learning.cs.rptu.de"
 ]);
 const ALLOWED_EVENTS = new Set([
   "session_start",
