@@ -134,6 +134,25 @@ describe("analytics dashboard data helpers", () => {
       completedExercises: 1,
     });
     expect(dateDetail.timeline.map((row) => row.id)).toEqual([1, 2, 4]);
+    expect(dateDetail.modules).toEqual([
+      expect.objectContaining({ module_id: "module1", interaction_count: 1, exercise_completions: 0 }),
+      expect.objectContaining({ module_id: "module2", interaction_count: 0, exercise_completions: 1 }),
+    ]);
+    expect(dateDetail.sections).toEqual([
+      expect.objectContaining({ section_id: "intro", view_count: 0 }),
+      expect.objectContaining({ section_id: "review", view_count: 0 }),
+    ]);
+    expect(dateDetail.components).toEqual([
+      expect.objectContaining({ component_id: "scatter", interaction_count: 1 }),
+      expect.objectContaining({ component_id: "quiz", interaction_count: 0 }),
+    ]);
+    expect(dateDetail.exercises).toEqual([
+      expect.objectContaining({ exercise_id: "exercise-2", completions: 1, completion_rate: 0 }),
+    ]);
+    expect(dateDetail.recentSessions).toEqual([
+      expect.objectContaining({ session_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", event_count: 1 }),
+      expect.objectContaining({ session_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", event_count: 2 }),
+    ]);
     expect(dateDetail.timeline[0].section_label).toBe("Einleitung");
     expect(dateDetail.timeline[1].component_label).toBe("Scatter Plot");
     expect(dateDetail.timeline[2].exercise_label).toBe("Quiz 2");
@@ -146,6 +165,19 @@ describe("analytics dashboard data helpers", () => {
       completedExercises: 0,
     });
     expect(sessionDetail.timeline.map((row) => row.id)).toEqual([3, 1, 2]);
+    expect(sessionDetail.modules).toEqual([
+      expect.objectContaining({ module_id: "module1", interaction_count: 1, exercise_completions: 0 }),
+    ]);
+    expect(sessionDetail.sections).toEqual([
+      expect.objectContaining({ section_id: "intro", view_count: 1 }),
+    ]);
+    expect(sessionDetail.components).toEqual([
+      expect.objectContaining({ component_id: "scatter", interaction_count: 1 }),
+    ]);
+    expect(sessionDetail.exercises).toEqual([]);
+    expect(sessionDetail.recentSessions).toEqual([
+      expect.objectContaining({ session_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", event_count: 3 }),
+    ]);
     expect(sessionDetail.last_seen_at).toBe("2026-06-09T08:03:00.000Z");
   });
 

@@ -284,6 +284,123 @@ onMounted(refresh);
           </tbody>
         </table>
       </section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>Module</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Modul</th>
+                <th>Aktive Zeit</th>
+                <th>Interaktionen</th>
+                <th>Übungen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedDateDetail.modules" :key="row.module_id">
+                <td>{{ row.module_id }}</td>
+                <td>{{ formatActiveTime(row.active_minutes) }}</td>
+                <td>{{ row.interaction_count }}</td>
+                <td>{{ row.exercise_completions }}</td>
+              </tr>
+              <tr v-if="selectedDateDetail.modules.length === 0"><td colspan="4">Noch keine Moduldaten.</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>Abschnitte</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Abschnitt</th>
+                <th>Modul</th>
+                <th>Views</th>
+                <th>Aktive Zeit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedDateDetail.sections" :key="`${row.module_id}-${row.section_id}`">
+                <td>{{ row.section_title || row.block_title || row.section_id }}</td>
+                <td>{{ row.module_id }}</td>
+                <td>{{ row.view_count }}</td>
+                <td>{{ formatActiveTime(row.active_minutes) }}</td>
+              </tr>
+              <tr v-if="selectedDateDetail.sections.length === 0"><td colspan="4">Noch keine Abschnittsdaten.</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>Komponenten</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Komponente</th>
+                <th>Views</th>
+                <th>Interaktionen</th>
+                <th>Parameter</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedDateDetail.components" :key="`${row.module_id}-${row.component_id}`">
+                <td>{{ row.component_title || row.component_id }}</td>
+                <td>{{ row.view_count }}</td>
+                <td>{{ row.interaction_count }}</td>
+                <td>{{ row.parameter_change_count }}</td>
+              </tr>
+              <tr v-if="selectedDateDetail.components.length === 0"><td colspan="4">Noch keine Komponentendaten.</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>Übungen</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Übung</th>
+                <th>Starts</th>
+                <th>Versuche</th>
+                <th>Abschlussrate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedDateDetail.exercises" :key="`${row.component_id}-${row.exercise_id}`">
+                <td>{{ row.exercise_title || row.exercise_id }}</td>
+                <td>{{ row.starts }}</td>
+                <td>{{ row.attempts }}</td>
+                <td>{{ row.completion_rate }}%</td>
+              </tr>
+              <tr v-if="selectedDateDetail.exercises.length === 0"><td colspan="4">Noch keine Übungsdaten.</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>Sessions</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Session</th>
+                <th>Events</th>
+                <th>Aktive Zeit</th>
+                <th>Zuletzt gesehen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedDateDetail.recentSessions" :key="row.session_id">
+                <td>{{ formatSessionId(row.session_id) }}</td>
+                <td>{{ row.event_count }}</td>
+                <td>{{ formatActiveTime(row.active_minutes) }}</td>
+                <td>{{ formatTimestamp(row.last_seen_at) }}</td>
+              </tr>
+              <tr v-if="selectedDateDetail.recentSessions.length === 0"><td colspan="4">Noch keine Sessions.</td></tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
     </template>
 
     <template v-else>
@@ -328,6 +445,123 @@ onMounted(refresh);
             <tr v-if="selectedSessionDetail.timeline.length === 0"><td colspan="6">Keine Events für diese Session.</td></tr>
           </tbody>
         </table>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>Module</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Modul</th>
+                <th>Aktive Zeit</th>
+                <th>Interaktionen</th>
+                <th>Übungen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedSessionDetail.modules" :key="row.module_id">
+                <td>{{ row.module_id }}</td>
+                <td>{{ formatActiveTime(row.active_minutes) }}</td>
+                <td>{{ row.interaction_count }}</td>
+                <td>{{ row.exercise_completions }}</td>
+              </tr>
+              <tr v-if="selectedSessionDetail.modules.length === 0"><td colspan="4">Noch keine Moduldaten.</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>Abschnitte</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Abschnitt</th>
+                <th>Modul</th>
+                <th>Views</th>
+                <th>Aktive Zeit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedSessionDetail.sections" :key="`${row.module_id}-${row.section_id}`">
+                <td>{{ row.section_title || row.block_title || row.section_id }}</td>
+                <td>{{ row.module_id }}</td>
+                <td>{{ row.view_count }}</td>
+                <td>{{ formatActiveTime(row.active_minutes) }}</td>
+              </tr>
+              <tr v-if="selectedSessionDetail.sections.length === 0"><td colspan="4">Noch keine Abschnittsdaten.</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>Komponenten</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Komponente</th>
+                <th>Views</th>
+                <th>Interaktionen</th>
+                <th>Parameter</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedSessionDetail.components" :key="`${row.module_id}-${row.component_id}`">
+                <td>{{ row.component_title || row.component_id }}</td>
+                <td>{{ row.view_count }}</td>
+                <td>{{ row.interaction_count }}</td>
+                <td>{{ row.parameter_change_count }}</td>
+              </tr>
+              <tr v-if="selectedSessionDetail.components.length === 0"><td colspan="4">Noch keine Komponentendaten.</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>Übungen</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Übung</th>
+                <th>Starts</th>
+                <th>Versuche</th>
+                <th>Abschlussrate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedSessionDetail.exercises" :key="`${row.component_id}-${row.exercise_id}`">
+                <td>{{ row.exercise_title || row.exercise_id }}</td>
+                <td>{{ row.starts }}</td>
+                <td>{{ row.attempts }}</td>
+                <td>{{ row.completion_rate }}%</td>
+              </tr>
+              <tr v-if="selectedSessionDetail.exercises.length === 0"><td colspan="4">Noch keine Übungsdaten.</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <h2>Sessions</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Session</th>
+                <th>Events</th>
+                <th>Aktive Zeit</th>
+                <th>Zuletzt gesehen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in selectedSessionDetail.recentSessions" :key="row.session_id">
+                <td>{{ formatSessionId(row.session_id) }}</td>
+                <td>{{ row.event_count }}</td>
+                <td>{{ formatActiveTime(row.active_minutes) }}</td>
+                <td>{{ formatTimestamp(row.last_seen_at) }}</td>
+              </tr>
+              <tr v-if="selectedSessionDetail.recentSessions.length === 0"><td colspan="4">Noch keine Sessions.</td></tr>
+            </tbody>
+          </table>
+        </article>
       </section>
     </template>
   </main>
