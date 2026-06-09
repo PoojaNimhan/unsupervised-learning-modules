@@ -5,13 +5,16 @@ import {
   fetchSummary,
   formatActiveTime,
   formatDateLabel,
+  formatDurationSeconds,
   formatMinutes,
+  formatPercent,
   formatSessionId,
   formatTimestamp,
   getDateDetail,
   getDefaultDate,
   getDefaultSession,
   getSessionDetail,
+  getVisibleTimelineEvents,
   normalizeSummary,
 } from "../analytics-dashboard/src/dashboard.js";
 
@@ -22,6 +25,7 @@ describe("analytics dashboard data helpers", () => {
         sessions: 0,
         events: 0,
         activeMinutes: 0,
+        estimatedSeconds: 0,
         completedExercises: 0,
       },
       modules: [],
@@ -42,6 +46,9 @@ describe("analytics dashboard data helpers", () => {
     expect(formatMinutes(12.25)).toBe("12,3");
     expect(formatActiveTime(0.5)).toBe("30 s");
     expect(formatActiveTime(1.25)).toBe("1,3 min");
+    expect(formatDurationSeconds(45)).toBe("45 s");
+    expect(formatDurationSeconds(90)).toBe("1,5 min");
+    expect(formatPercent(12.5)).toBe("12,5%");
     expect(formatSessionId("12345678-1234-5678-1234-567812345678")).toBe("12345678");
     expect(formatDateLabel("2026-06-09")).not.toBe("2026-06-09");
     expect(formatTimestamp("invalid-date")).toBe("invalid-date");
@@ -131,23 +138,24 @@ describe("analytics dashboard data helpers", () => {
       sessions: 2,
       events: 3,
       activeMinutes: 0.5,
+      estimatedSeconds: 35,
       completedExercises: 1,
     });
     expect(dateDetail.timeline.map((row) => row.id)).toEqual([1, 2, 4]);
     expect(dateDetail.modules).toEqual([
-      expect.objectContaining({ module_id: "module1", interaction_count: 1, exercise_completions: 0 }),
-      expect.objectContaining({ module_id: "module2", interaction_count: 0, exercise_completions: 1 }),
+      expect.objectContaining({ module_id: "module1", interaction_count: 1, exercise_completions: 0, estimated_seconds: 35 }),
+      expect.objectContaining({ module_id: "module2", interaction_count: 0, exercise_completions: 1, estimated_seconds: 0 }),
     ]);
     expect(dateDetail.sections).toEqual([
-      expect.objectContaining({ section_id: "intro", view_count: 0 }),
-      expect.objectContaining({ section_id: "review", view_count: 0 }),
+      expect.objectContaining({ section_id: "intro", view_count: 0, estimated_seconds: 35 }),
+      expect.objectContaining({ section_id: "review", view_count: 0, estimated_seconds: 0 }),
     ]);
     expect(dateDetail.components).toEqual([
-      expect.objectContaining({ component_id: "scatter", interaction_count: 1 }),
-      expect.objectContaining({ component_id: "quiz", interaction_count: 0 }),
+      expect.objectContaining({ component_id: "scatter", interaction_count: 1, estimated_seconds: 0 }),
+      expect.objectContaining({ component_id: "quiz", interaction_count: 0, estimated_seconds: 0 }),
     ]);
     expect(dateDetail.exercises).toEqual([
-      expect.objectContaining({ exercise_id: "exercise-2", completions: 1, completion_rate: 0 }),
+      expect.objectContaining({ exercise_id: "exercise-2", completions: 1, completion_rate: 0, estimated_seconds: 0 }),
     ]);
     expect(dateDetail.recentSessions).toEqual([
       expect.objectContaining({ session_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", event_count: 1 }),
@@ -162,23 +170,34 @@ describe("analytics dashboard data helpers", () => {
       sessions: 1,
       events: 3,
       activeMinutes: 1,
+      estimatedSeconds: 70,
       completedExercises: 0,
     });
     expect(sessionDetail.timeline.map((row) => row.id)).toEqual([3, 1, 2]);
     expect(sessionDetail.modules).toEqual([
-      expect.objectContaining({ module_id: "module1", interaction_count: 1, exercise_completions: 0 }),
+      expect.objectContaining({ module_id: "module1", interaction_count: 1, exercise_completions: 0, estimated_seconds: 70 }),
     ]);
     expect(sessionDetail.sections).toEqual([
-      expect.objectContaining({ section_id: "intro", view_count: 1 }),
+      expect.objectContaining({ section_id: "intro", view_count: 1, estimated_seconds: 70 }),
     ]);
     expect(sessionDetail.components).toEqual([
-      expect.objectContaining({ component_id: "scatter", interaction_count: 1 }),
+      expect.objectContaining({ component_id: "scatter", interaction_count: 1, estimated_seconds: 0 }),
     ]);
     expect(sessionDetail.exercises).toEqual([]);
     expect(sessionDetail.recentSessions).toEqual([
       expect.objectContaining({ session_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", event_count: 3 }),
     ]);
     expect(sessionDetail.last_seen_at).toBe("2026-06-09T08:03:00.000Z");
+  });
+
+  it("filters heartbeat events from the visible timeline", () => {
+    expect(
+      getVisibleTimelineEvents([
+        { id: 1, event_name: "session_start" },
+        { id: 2, event_name: "session_heartbeat" },
+        { id: 3, event_name: "component_interaction" },
+      ]).map((row) => row.id)
+    ).toEqual([1, 3]);
   });
 
   it("fetches and normalizes summary data", async () => {
@@ -202,12 +221,18 @@ describe("analytics dashboard data helpers", () => {
         sessions: 2,
         events: 5,
         activeMinutes: 3.5,
+        estimatedSeconds: 0,
         completedExercises: 1,
       },
-      modules: [{ module_id: "module1" }],
-      sections: [{ section_id: "exploration:block-1", section_title: "Deine Aufgabe" }],
+      modules: [{ module_id: "unknown", estimated_seconds: 0 }],
+      sections: [],
       dates: [{ date: "2026-06-09", sessions: 2, events: 5, activeMinutes: 3.5, completedExercises: 1 }],
-      recentSessions: [],
+      recentSessions: [
+        expect.objectContaining({
+          session_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          event_count: 1,
+        }),
+      ],
     });
   });
 });

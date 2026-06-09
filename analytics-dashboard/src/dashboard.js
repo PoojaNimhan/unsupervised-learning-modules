@@ -5,11 +5,15 @@ const ACTIVE_EVENT_NAMES = new Set([
   "exercise_answered",
 ]);
 
+const HIDDEN_TIMELINE_EVENT_NAMES = new Set(["session_heartbeat"]);
+const MAX_EVENT_GAP_SECONDS = 35;
+
 const EMPTY_DETAIL = {
   totals: {
     sessions: 0,
     events: 0,
     activeMinutes: 0,
+    estimatedSeconds: 0,
     completedExercises: 0,
   },
   timeline: [],
@@ -25,6 +29,7 @@ const EMPTY_SUMMARY = {
     sessions: 0,
     events: 0,
     activeMinutes: 0,
+    estimatedSeconds: 0,
     completedExercises: 0,
   },
   modules: [],
@@ -121,14 +126,89 @@ function activeMinutesFromCount(count) {
   return count * 0.5;
 }
 
-function sortByActiveTime(left, right) {
-  return asNumber(right.active_minutes) - asNumber(left.active_minutes)
+function clampEstimatedSeconds(value) {
+  return Math.max(0, Math.min(MAX_EVENT_GAP_SECONDS, Math.round(asNumber(value))));
+}
+
+function secondsBetween(start, end) {
+  const startTime = Date.parse(start);
+  const endTime = Date.parse(end);
+  if (!Number.isFinite(startTime) || !Number.isFinite(endTime) || endTime <= startTime) return 0;
+  return clampEstimatedSeconds((endTime - startTime) / 1000);
+}
+
+function incrementMap(map, key, seconds) {
+  if (!key || seconds <= 0) return;
+  map.set(key, asNumber(map.get(key)) + seconds);
+}
+
+function buildEstimatedTimeIndex(events) {
+  const timeline = buildTimeline(events);
+  const sessions = new Map();
+
+  for (const event of timeline) {
+    if (!event.session_id) continue;
+    const existing = sessions.get(event.session_id) ?? [];
+    existing.push(event);
+    sessions.set(event.session_id, existing);
+  }
+
+  const index = {
+    totalEstimatedSeconds: 0,
+    modules: new Map(),
+    sections: new Map(),
+    components: new Map(),
+    exercises: new Map(),
+  };
+
+  for (const sessionEvents of sessions.values()) {
+    for (let i = 0; i < sessionEvents.length - 1; i += 1) {
+      const current = sessionEvents[i];
+      const next = sessionEvents[i + 1];
+      if (current.event_name === "session_end") continue;
+
+      const seconds = secondsBetween(current.occurred_at, next.occurred_at);
+      if (seconds <= 0) continue;
+
+      index.totalEstimatedSeconds += seconds;
+      incrementMap(index.modules, current.module_id || "unknown", seconds);
+
+      if (current.section_id) {
+        incrementMap(index.sections, `${current.module_id || "unknown"}::${current.section_id}`, seconds);
+      }
+      if (current.component_id) {
+        incrementMap(index.components, `${current.module_id || "unknown"}::${current.component_id}`, seconds);
+      }
+      if (current.exercise_id) {
+        incrementMap(index.exercises, `${current.component_id || "unknown"}::${current.exercise_id}`, seconds);
+      }
+    }
+  }
+
+  return index;
+}
+
+function shareOfEstimatedTime(seconds, totalSeconds) {
+  const safeTotal = asNumber(totalSeconds);
+  if (safeTotal <= 0) return 0;
+  return Math.round((asNumber(seconds) / safeTotal) * 1000) / 10;
+}
+
+function sortByFocus(left, right) {
+  return asNumber(right.estimated_seconds) - asNumber(left.estimated_seconds)
+    || asNumber(right.active_minutes) - asNumber(left.active_minutes)
     || asNumber(right.event_count) - asNumber(left.event_count)
     || asString(left.module_id || left.section_id || left.component_id || left.exercise_id)
       .localeCompare(asString(right.module_id || right.section_id || right.component_id || right.exercise_id));
 }
 
-function summarizeModules(events) {
+function sortByExerciseFocus(left, right) {
+  return asNumber(right.estimated_seconds) - asNumber(left.estimated_seconds)
+    || right.completions - left.completions
+    || right.attempts - left.attempts;
+}
+
+function summarizeModules(events, timeIndex) {
   const groups = new Map();
 
   for (const event of events) {
@@ -140,6 +220,8 @@ function summarizeModules(events) {
       exercise_completions: 0,
       active_count: 0,
       active_minutes: 0,
+      estimated_seconds: 0,
+      estimated_share: 0,
     };
 
     existing.event_count += 1;
@@ -157,11 +239,19 @@ function summarizeModules(events) {
   }
 
   return [...groups.values()]
-    .map((row) => ({ ...row, active_minutes: activeMinutesFromCount(row.active_count) }))
-    .sort(sortByActiveTime);
+    .map((row) => ({
+      ...row,
+      active_minutes: activeMinutesFromCount(row.active_count),
+      estimated_seconds: asNumber(timeIndex.modules.get(row.module_id)),
+      estimated_share: shareOfEstimatedTime(
+        timeIndex.modules.get(row.module_id),
+        timeIndex.totalEstimatedSeconds
+      ),
+    }))
+    .sort(sortByFocus);
 }
 
-function summarizeSections(events) {
+function summarizeSections(events, timeIndex) {
   const groups = new Map();
 
   for (const event of events) {
@@ -177,6 +267,8 @@ function summarizeSections(events) {
       view_count: 0,
       active_event_count: 0,
       active_minutes: 0,
+      estimated_seconds: 0,
+      estimated_share: 0,
     };
 
     existing.event_count += 1;
@@ -200,11 +292,19 @@ function summarizeSections(events) {
   }
 
   return [...groups.values()]
-    .map((row) => ({ ...row, active_minutes: activeMinutesFromCount(row.active_event_count) }))
-    .sort(sortByActiveTime);
+    .map((row) => ({
+      ...row,
+      active_minutes: activeMinutesFromCount(row.active_event_count),
+      estimated_seconds: asNumber(timeIndex.sections.get(`${row.module_id}::${row.section_id}`)),
+      estimated_share: shareOfEstimatedTime(
+        timeIndex.sections.get(`${row.module_id}::${row.section_id}`),
+        timeIndex.totalEstimatedSeconds
+      ),
+    }))
+    .sort(sortByFocus);
 }
 
-function summarizeComponents(events) {
+function summarizeComponents(events, timeIndex) {
   const groups = new Map();
 
   for (const event of events) {
@@ -220,6 +320,8 @@ function summarizeComponents(events) {
       parameter_change_count: 0,
       active_count: 0,
       active_minutes: 0,
+      estimated_seconds: 0,
+      estimated_share: 0,
     };
 
     existing.event_count += 1;
@@ -244,11 +346,19 @@ function summarizeComponents(events) {
   }
 
   return [...groups.values()]
-    .map((row) => ({ ...row, active_minutes: activeMinutesFromCount(row.active_count) }))
-    .sort(sortByActiveTime);
+    .map((row) => ({
+      ...row,
+      active_minutes: activeMinutesFromCount(row.active_count),
+      estimated_seconds: asNumber(timeIndex.components.get(`${row.module_id}::${row.component_id}`)),
+      estimated_share: shareOfEstimatedTime(
+        timeIndex.components.get(`${row.module_id}::${row.component_id}`),
+        timeIndex.totalEstimatedSeconds
+      ),
+    }))
+    .sort(sortByFocus);
 }
 
-function summarizeExercises(events) {
+function summarizeExercises(events, timeIndex) {
   const groups = new Map();
 
   for (const event of events) {
@@ -263,6 +373,8 @@ function summarizeExercises(events) {
       attempts: 0,
       completions: 0,
       completion_rate: 0,
+      estimated_seconds: 0,
+      estimated_share: 0,
     };
 
     if (event.event_name === "exercise_started") {
@@ -282,8 +394,13 @@ function summarizeExercises(events) {
     .map((row) => ({
       ...row,
       completion_rate: row.starts === 0 ? 0 : Math.round((row.completions / row.starts) * 10000) / 100,
+      estimated_seconds: asNumber(timeIndex.exercises.get(`${row.component_id}::${row.exercise_id}`)),
+      estimated_share: shareOfEstimatedTime(
+        timeIndex.exercises.get(`${row.component_id}::${row.exercise_id}`),
+        timeIndex.totalEstimatedSeconds
+      ),
     }))
-    .sort((left, right) => right.completions - left.completions || right.attempts - left.attempts);
+    .sort(sortByExerciseFocus);
 }
 
 function summarizeSessions(events) {
@@ -324,11 +441,14 @@ function summarizeSessions(events) {
 }
 
 function summarizeInsights(events) {
+  const timeIndex = buildEstimatedTimeIndex(events);
+
   return {
-    modules: summarizeModules(events),
-    sections: summarizeSections(events),
-    components: summarizeComponents(events),
-    exercises: summarizeExercises(events),
+    estimatedSeconds: timeIndex.totalEstimatedSeconds,
+    modules: summarizeModules(events, timeIndex),
+    sections: summarizeSections(events, timeIndex),
+    components: summarizeComponents(events, timeIndex),
+    exercises: summarizeExercises(events, timeIndex),
     recentSessions: summarizeSessions(events),
   };
 }
@@ -346,6 +466,7 @@ function buildDateDetails(events) {
         sessions: 0,
         events: 0,
         activeMinutes: 0,
+        estimatedSeconds: 0,
         completedExercises: 0,
       },
       timeline: [],
@@ -377,6 +498,8 @@ function buildDateDetails(events) {
     detail.totals.sessions = detail.sessionIds.size;
     detail.totals.activeMinutes = activeMinutesFromCount(detail.activeEvents);
     Object.assign(detail, summarizeInsights(detail.timeline));
+    detail.totals.estimatedSeconds = detail.estimatedSeconds;
+    delete detail.estimatedSeconds;
     delete detail.sessionIds;
     delete detail.activeEvents;
   }
@@ -395,6 +518,7 @@ function buildSessionDetails(events, sessions) {
         sessions: 1,
         events: session.event_count,
         activeMinutes: session.active_minutes,
+        estimatedSeconds: 0,
         completedExercises: 0,
       },
       timeline: [],
@@ -423,6 +547,7 @@ function buildSessionDetails(events, sessions) {
         sessions: 1,
         events: 0,
         activeMinutes: 0,
+        estimatedSeconds: 0,
         completedExercises: 0,
       },
       timeline: [],
@@ -459,6 +584,8 @@ function buildSessionDetails(events, sessions) {
     detail.totals.events = detail.event_count || detail.derivedEventCount;
     detail.totals.activeMinutes = detail.active_minutes || detail.derivedActiveMinutes;
     Object.assign(detail, summarizeInsights(detail.timeline));
+    detail.totals.estimatedSeconds = detail.estimatedSeconds;
+    delete detail.estimatedSeconds;
     delete detail.derivedEventCount;
     delete detail.derivedActiveMinutes;
   }
@@ -494,24 +621,33 @@ export function getSessionDetail(summary, sessionId) {
   return summary.sessionDetails[sessionId] ?? { ...EMPTY_DETAIL, session_id: sessionId };
 }
 
+export function getVisibleTimelineEvents(events) {
+  return asArray(events).filter((event) => !HIDDEN_TIMELINE_EVENT_NAMES.has(asString(event?.event_name)));
+}
+
 export function normalizeSummary(summary) {
   const totals = summary?.totals ?? {};
   const timelineEvents = asArray(summary?.timelineEvents).map(normalizeTimelineEvent);
   const sessions = asArray(summary?.sessions).map(normalizeSessionRow);
   const dateDetails = buildDateDetails(timelineEvents);
+  const overviewInsights = summarizeInsights(timelineEvents);
 
   return {
     totals: {
       sessions: asNumber(totals.sessions),
       events: asNumber(totals.events),
       activeMinutes: asNumber(totals.activeMinutes),
+      estimatedSeconds: overviewInsights.estimatedSeconds,
       completedExercises: asNumber(totals.completedExercises),
     },
-    modules: asArray(summary?.modules),
-    sections: asArray(summary?.sections),
-    components: asArray(summary?.components),
-    exercises: asArray(summary?.exercises),
-    recentSessions: asArray(summary?.recentSessions).map(normalizeSessionRow),
+    modules: timelineEvents.length > 0 ? overviewInsights.modules : asArray(summary?.modules),
+    sections: timelineEvents.length > 0 ? overviewInsights.sections : asArray(summary?.sections),
+    components: timelineEvents.length > 0 ? overviewInsights.components : asArray(summary?.components),
+    exercises: timelineEvents.length > 0 ? overviewInsights.exercises : asArray(summary?.exercises),
+    recentSessions:
+      timelineEvents.length > 0
+        ? overviewInsights.recentSessions
+        : asArray(summary?.recentSessions).map(normalizeSessionRow),
     dates: (asArray(summary?.dates).length > 0
       ? asArray(summary?.dates).map(normalizeDateRow)
       : buildDerivedDates(timelineEvents)),
@@ -537,6 +673,20 @@ export function formatActiveTime(minutes) {
   const seconds = Math.round(asNumber(minutes) * 60);
   if (seconds < 60) return `${seconds} s`;
   return `${formatMinutes(seconds / 60)} min`;
+}
+
+export function formatDurationSeconds(seconds) {
+  const rounded = Math.round(asNumber(seconds));
+  if (rounded < 60) return `${rounded} s`;
+  if (rounded < 3600) return `${formatMinutes(rounded / 60)} min`;
+  return `${formatMinutes(rounded / 3600)} h`;
+}
+
+export function formatPercent(value) {
+  return `${asNumber(value).toLocaleString("de-DE", {
+    maximumFractionDigits: 1,
+    minimumFractionDigits: 0,
+  })}%`;
 }
 
 export function formatSessionId(sessionId) {

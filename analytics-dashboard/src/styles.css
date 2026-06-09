@@ -32,7 +32,7 @@ select {
   display: grid;
   gap: 1.5rem;
   margin: 0 auto;
-  max-width: 1180px;
+  max-width: 1320px;
   padding: 2rem;
 }
 
@@ -70,7 +70,7 @@ p {
 .cards {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .tabs {
@@ -108,6 +108,7 @@ p {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
 }
 
 .panel {
@@ -142,6 +143,12 @@ p {
   font-size: 0.95rem;
 }
 
+.helper-copy {
+  color: #557086;
+  margin: 0;
+  max-width: 78ch;
+}
+
 .empty-state {
   color: #557086;
   margin: 0;
@@ -159,9 +166,38 @@ p {
   color: #8d251c;
 }
 
-table {
+.table-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid #d8e7ef;
+  border-radius: 18px;
+}
+
+.table-scroll--narrow {
+  max-width: 100%;
+}
+
+.table-scroll--wide {
+  max-width: 100%;
+}
+
+.table-scroll--timeline {
+  max-width: 100%;
+}
+
+.data-table {
   border-collapse: collapse;
   width: 100%;
+  min-width: 720px;
+  table-layout: fixed;
+}
+
+.table-scroll--wide .data-table {
+  min-width: 860px;
+}
+
+.table-scroll--timeline .data-table {
+  min-width: 1080px;
 }
 
 th,
@@ -169,11 +205,16 @@ td {
   border-bottom: 1px solid #d8e7ef;
   padding: 0.7rem 0.5rem;
   text-align: left;
+  vertical-align: top;
+  word-break: break-word;
 }
 
 th {
   color: #557086;
   font-size: 0.85rem;
+  position: sticky;
+  top: 0;
+  background: #f7fbfd;
   text-transform: uppercase;
 }
 
