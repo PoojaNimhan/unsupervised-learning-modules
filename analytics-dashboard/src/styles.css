@@ -19,6 +19,15 @@ button {
   padding: 0.75rem 1rem;
 }
 
+select {
+  border: 1px solid rgba(23, 68, 106, 0.18);
+  border-radius: 14px;
+  background: white;
+  color: inherit;
+  font: inherit;
+  padding: 0.8rem 1rem;
+}
+
 .dashboard-shell {
   display: grid;
   gap: 1.5rem;
@@ -64,6 +73,22 @@ p {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tab-button {
+  background: rgba(255, 255, 255, 0.82);
+  color: #17446a;
+}
+
+.tab-button--active {
+  background: #17446a;
+  color: white;
+}
+
 .metric-card {
   display: grid;
   gap: 0.3rem;
@@ -88,6 +113,38 @@ p {
 .panel {
   overflow: hidden;
   padding: 1.2rem;
+}
+
+.detail-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.selector-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.selector-row label {
+  color: #557086;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.session-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: #35536a;
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  color: #557086;
+  margin: 0;
 }
 
 .status {
@@ -128,6 +185,11 @@ th {
 
   .hero {
     align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .selector-row {
+    align-items: stretch;
     flex-direction: column;
   }
 }

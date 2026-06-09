@@ -39,6 +39,24 @@ async function safeSelect(supabase: ReturnType<typeof createClient>, table: stri
   return data ?? [];
 }
 
+const ACTIVE_EVENT_NAMES = new Set([
+  "session_heartbeat",
+  "component_interaction",
+  "parameter_changed",
+  "exercise_answered",
+]);
+
+function asNumber(value: unknown) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function toDateKey(timestamp: unknown) {
+  return typeof timestamp === "string" && timestamp.length >= 10
+    ? timestamp.slice(0, 10)
+    : "unknown";
+}
+
 Deno.serve(async (request) => {
   const origin = request.headers.get("Origin");
 
@@ -63,9 +81,13 @@ Deno.serve(async (request) => {
   );
 
   try {
-    const [sessions, events, modules, sections, components, exercises, recentSessions] = await Promise.all([
+    const [sessions, rawEvents, modules, sections, components, exercises, sessionSummaries] = await Promise.all([
       safeSelect(supabase, "analytics_sessions", "id"),
-      safeSelect(supabase, "analytics_events", "id,event_name"),
+      safeSelect(
+        supabase,
+        "analytics_events",
+        "id,session_id,occurred_at,event_name,module_id,section_id,component_id,exercise_id,properties"
+      ),
       safeSelect(supabase, "analytics_module_summary"),
       safeSelect(supabase, "analytics_section_summary"),
       safeSelect(supabase, "analytics_component_summary"),
@@ -77,11 +99,58 @@ Deno.serve(async (request) => {
       ),
     ]);
 
-    const activeMinutes = recentSessions.reduce(
+    const events = rawEvents
+      .slice()
+      .sort((a, b) => String(a.occurred_at).localeCompare(String(b.occurred_at)) || asNumber(a.id) - asNumber(b.id));
+
+    const activeMinutes = sessionSummaries.reduce(
       (sum, session) => sum + Number(session.active_minutes ?? 0),
       0
     );
     const completedExercises = events.filter((event) => event.event_name === "exercise_completed").length;
+    const dateMap = new Map<string, {
+      date: string;
+      sessionIds: Set<string>;
+      events: number;
+      activeEvents: number;
+      completedExercises: number;
+    }>();
+
+    for (const event of events) {
+      const date = toDateKey(event.occurred_at);
+      const existing = dateMap.get(date) ?? {
+        date,
+        sessionIds: new Set<string>(),
+        events: 0,
+        activeEvents: 0,
+        completedExercises: 0,
+      };
+      existing.events += 1;
+      if (typeof event.session_id === "string" && event.session_id) {
+        existing.sessionIds.add(event.session_id);
+      }
+      if (ACTIVE_EVENT_NAMES.has(String(event.event_name))) {
+        existing.activeEvents += 1;
+      }
+      if (event.event_name === "exercise_completed") {
+        existing.completedExercises += 1;
+      }
+      dateMap.set(date, existing);
+    }
+
+    const dates = [...dateMap.values()]
+      .map((entry) => ({
+        date: entry.date,
+        sessions: entry.sessionIds.size,
+        events: entry.events,
+        activeMinutes: Math.round(entry.activeEvents * 50) / 100,
+        completedExercises: entry.completedExercises,
+      }))
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+    const sortedSessions = sessionSummaries
+      .slice()
+      .sort((a, b) => String(b.last_seen_at).localeCompare(String(a.last_seen_at)));
 
     return jsonResponse(
       200,
@@ -96,9 +165,10 @@ Deno.serve(async (request) => {
         sections,
         components,
         exercises,
-        recentSessions: recentSessions
-          .sort((a, b) => String(b.last_seen_at).localeCompare(String(a.last_seen_at)))
-          .slice(0, 20),
+        dates,
+        sessions: sortedSessions,
+        timelineEvents: events,
+        recentSessions: sortedSessions.slice(0, 20),
       },
       origin
     );

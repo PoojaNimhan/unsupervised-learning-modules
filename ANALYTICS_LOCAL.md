@@ -72,3 +72,29 @@ npm test
 
 When `VITE_SESSION_ANALYTICS_ENABLED` is not `true`, no session tracking,
 heartbeats, or analytics API calls are made.
+
+## Hosted Learner Build
+
+For a hosted static deployment, analytics must be enabled at build time. A
+plain `npm run build` produces an analytics-free learner build.
+
+Build the learner site with the deployed event endpoint baked into the static
+assets:
+
+```bash
+VITE_SESSION_ANALYTICS_ENABLED=true \
+VITE_SESSION_ANALYTICS_ENDPOINT=https://xbkyipuivyhdiwwkcytc.supabase.co/functions/v1/analytics-event \
+npm run build
+```
+
+Before testing the hosted site, confirm all of the following:
+
+- the deployed learner origin is listed in `supabase/functions/analytics-event/index.ts`
+- `supabase functions deploy analytics-event` has been run after changing that allowlist
+- the browser is loading the newly built `dist/` output, not an older analytics-free build
+
+For the local dashboard against the deployed summary function, start it with:
+
+```bash
+VITE_ANALYTICS_SUMMARY_ENDPOINT=https://xbkyipuivyhdiwwkcytc.supabase.co/functions/v1/analytics-summary npm run dev:analytics
+```
