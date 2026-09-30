@@ -2,7 +2,9 @@ node_modules/
 
 dist/
 dist-analytics-dashboard/
+dist-infschule/
 generated/
+inf-schule-export/
 
 .DS_Store
 
