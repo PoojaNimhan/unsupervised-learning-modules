@@ -66,10 +66,11 @@ export function simpleTable(headers, rows) {
 }
 
 export function infSchuleFile({ title, menu, features, html, uuid }) {
-  const parts = [`title: ${title}`, "----", `menu: ${menu}`];
+  const blocks = [`Title: ${title}`, `Menutitle: ${menu}`];
   if (features) {
-    parts.push("----", `features: ${features}`);
+    blocks.push(`Features: ${features}`);
   }
-  parts.push("----", html.trim(), "----", `uuid: ${uuid}`);
-  return `${parts.join("\n")}\n`;
+  blocks.push(`Text:\n\n${html.trim()}`);
+  blocks.push(`Uuid: ${uuid}`);
+  return `${blocks.join("\n\n----\n\n")}\n`;
 }

@@ -82,13 +82,18 @@ structuring:
       initialized: "Die Startzentren sind gesetzt. Im naechsten Schritt wird jeder Punkt dem naechsten Zentrum zugeordnet."
       assigned: "Alle Punkte sind nun einem Zentrum zugeordnet. Jetzt kannst du die Zentren an die Durchschnittsposition verschieben."
       recomputed: "Die Zentren wurden verschoben. Wenn sie sich noch veraendern, beginnt jetzt die naechste Iteration."
-      stable: "Die Zentren bewegen sich nicht mehr. Der K-Means-Ablauf ist fuer diese Startwahl stabil geworden."
+      stable: "Die Zentren bewegen sich kaum noch. Klicke ruhig weiter auf \"Naechste Iteration\" - im Iterationsverlauf unten siehst du, ob sich die Werte wirklich nicht mehr aendern."
     summaries:
       active_config_label: "Aktive Konfiguration"
       current_step_label: "Aktueller Schritt"
       iteration_label: "Iteration"
       assignments_heading: "Aktuelle Zuordnung"
       centers_heading: "Zentrumstabelle"
+      history_heading: "Iterationsverlauf"
+      history_intro: "Hier siehst du, wie weit sich jedes Zentrum in jeder Iteration bewegt hat. Klicke ruhig immer weiter auf \"Naechste Iteration\" - wenn die Bewegung bei allen Zentren 0 wird, aendert sich nichts mehr, und du siehst selbst, wann der Ablauf stabil ist."
+      history_iteration_label: "Iteration"
+      history_center_label_template: "Bewegung C{index}"
+      history_stable_note: "Die Bewegung ist bei allen Zentren 0. Weitere Iterationen wuerden nichts mehr veraendern."
       current_step_values:
         initialize: "Startzentren gesetzt"
         assign: "Punkte zuordnen"
@@ -147,7 +152,17 @@ concept:
     - "Schritt 2: Jedes Zentrum wird zum Mittelwert aller ihm zugewiesenen Punkte verschoben."
   key_formula_heading: "Die Schlüsselformel"
   key_formula_intro: "Neue Mittelposition (nach jeder Iteration):"
+  key_formula_plain_heading: "Kurz gesagt:"
+  key_formula_plain_body: >
+    Ein neues Clusterzentrum ist einfach der Durchschnitt aller Punkte, die
+    ihm zugeordnet sind. Du addierst also die Positionen dieser Punkte und
+    teilst die Summe durch die Anzahl der Punkte - genau wie beim Berechnen
+    eines gewöhnlichen Notendurchschnitts.
+  key_formula_plain_example: >
+    Beispiel: Drei Punkte mit den x-Werten 2, 4 und 6 gehören zu einem
+    Cluster. Neue Mitte: (2 + 4 + 6) / 3 = 4.
   key_formula_note: "(Neuer Mittelpunkt = Mittelwert der Positionen aller Punkte in der Gruppe.)"
+  key_formula_expanded_label: "Ausführlich geschrieben ist die Summe im Zähler nichts anderes als:"
   symbol_heading: "Symbolerklärung:"
   symbol_items:
     - "&mu;<sub>j</sub> = neue Position des Clusterzentrums j"
@@ -188,20 +203,20 @@ concept:
   two_dimensional_example:
     heading: "2D-Beispiel: Cake Stalls auf dem Schulhof. 6 Besucherpositionen (x,y Koordinaten in Metern):"
     visitor_lines:
-      - "A: (1,2)    B: (2,1)    C: (3,3)"
-      - "D: (10,9)   E: (11,10)  F: (9,11)"
-    setup_line: "K = 2 Stände | Start: C1=(2,2), C2=(10,10)"
+      - "A: (1|2)    B: (2|1)    C: (3|3)"
+      - "D: (10|9)   E: (11|10)  F: (9|11)"
+    setup_line: "K = 2 Stände | Start: C1=(2|2), C2=(10|10)"
     distance_formula_heading: "Entfernungsformel (Euklidische Distanz)"
     iteration_one_heading: "Iteration 1"
     iteration_one_lines:
-      - "Abstände zu C1(2,2): A=1.4, B=1.4, C=2.0, D=11.3, E=12.0, F=12.0"
-      - "Abstände zu C2(10,10):A=11.3,B=12.0,C=10.4,D=1.4,E=1.4,F=2.2"
+      - "Abstände zu C1(2|2): A=1.4, B=1.4, C=2.0, D=11.3, E=12.0, F=12.0"
+      - "Abstände zu C2(10|10):A=11.3,B=12.0,C=10.4,D=1.4,E=1.4,F=2.2"
       - "Zuordnung:"
-      - "Cluster 1: A,B,C → Neues C1: &mu;<sub>1</sub> = ((1+2+3)/3, (2+1+3)/3) = (2.0, 2.0)"
-      - "Cluster 2: D,E,F → Neues C2: &mu;<sub>2</sub> = ((10+11+9)/3, (9+10+11)/3) = (10.0, 10.0)"
+      - "Cluster 1: A,B,C → Neues C1: &mu;<sub>1</sub> = ((1+2+3)/3|(2+1+3)/3) = (2,0|2,0)"
+      - "Cluster 2: D,E,F → Neues C2: &mu;<sub>2</sub> = ((10+11+9)/3|(9+10+11)/3) = (10,0|10,0)"
     iteration_two_heading: "Iteration 2"
     result: >
-      Konvergiert! Endgültige Stände: (2.0, 2.0) & (10.0, 10.0)
+      Konvergiert! Endgültige Stände: (2,0|2,0) & (10,0|10,0)
   dimension_note_heading: "Hinweis zu Dimensionen"
   dimension_note_body: >
     Die hier gezeigten Beispiele verwenden ein- oder zweidimensionale Daten, da
@@ -217,12 +232,12 @@ exercises:
     musst einige Aufgaben lösen, um die Position der Kuchenstände zu finden.
   visitors_heading: "6 Besucher andiesen 2D-Positionen:"
   visitors:
-    - "Besucher 1: (1,2)"
-    - "Besucher 2: (2,1)"
-    - "Besucher 3: (3,3)"
-    - "Besucher 4: (9,10)"
-    - "Besucher 5: (10,9)"
-    - "Besucher 6: (11,11)"
+    - "Besucher 1: (1|2)"
+    - "Besucher 2: (2|1)"
+    - "Besucher 3: (3|3)"
+    - "Besucher 4: (9|10)"
+    - "Besucher 5: (10|9)"
+    - "Besucher 6: (11|11)"
   distance_helper:
     heading: "Distanzmatrix selbst berechnen"
     intro: "Lege eigene Zentren und Datenpunkte fest. Nach dem Klick auf \"Berechnen\" siehst du fuer jeden Punkt die Distanz zu jedem Zentrum."
@@ -246,8 +261,8 @@ exercises:
     - heading: "Übung 1: Basic Clustering"
       dataset_intro: "K = 2 Stände und Start-Center:"
       setup_items:
-        - "C1 = (2,2)"
-        - "C2 = (10,10)"
+        - "C1 = (2|2)"
+        - "C2 = (10|10)"
       formula_after_task: 3
       tasks:
         - Berechne die Entfernung jedes Besuchers zu beiden Zentren.
@@ -258,7 +273,7 @@ exercises:
     - heading: "Übung 2: Unterschiedliche Ausgangspunkte"
       dataset_intro: >
         Derselbe Datensatz. Nun ist K = 2, aber wir beginnen mit ungünstigen
-        Zentren: C1 = (5,5), C2 = (6,6)
+        Zentren: C1 = (5|5), C2 = (6|6)
       tasks:
         - Weisen Sie Besucher den nächstgelegenen Zentren zu.
         - Berechne die neuen Mittelpunkte nach Iteration 1.
@@ -267,14 +282,14 @@ exercises:
     - heading: "Übung 3: WählenK=3"
       dataset_intro: "Neuer Datensatz:"
       setup_items:
-        - "A = (1,1)"
-        - "B = (1,2)"
-        - "C = (2,1)"
-        - "D = (3,3)"
-        - "E = (10,10)"
-        - "F =  (11,10)"
-        - "G = (10,11)"
-        - "H = (12,12)"
+        - "A = (1|1)"
+        - "B = (1|2)"
+        - "C = (2|1)"
+        - "D = (3|3)"
+        - "E = (10|10)"
+        - "F = (11|10)"
+        - "G = (10|11)"
+        - "H = (12|12)"
       followup_lines:
         - "K = 3 Stände"
         - "Fang einfach irgendwo an (ganz wie du willst)."

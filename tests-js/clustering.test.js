@@ -103,7 +103,7 @@ test("advances through the explicit stepper stages", () => {
   expect(iterated.lastAction).toBe("next_iteration");
 });
 
-test("keeps the converged state visible and blocks further advancement", () => {
+test("keeps the converged state visible but still lets the student advance", () => {
   const stable = {
     stage: "recomputed",
     lastAction: "recompute",
@@ -120,11 +120,48 @@ test("keeps the converged state visible and blocks further advancement", () => {
     ],
     assignments: [0, 0, 1],
     converged: true,
+    history: [],
   };
 
-  expect(() => advanceKmeansIteration(stable)).toThrow(
-    "The stepper has already converged and cannot advance."
+  const iterated = advanceKmeansIteration(stable);
+  expect(iterated.iteration).toBe(3);
+  expect(iterated.stage).toBe("initialized");
+  expect(iterated.lastAction).toBe("next_iteration");
+});
+
+test("records per-center movement deltas in the iteration history", () => {
+  const points = [
+    [1, 1],
+    [3, 3],
+    [10, 10],
+  ];
+  const initialized = initializeKmeansStepper(
+    [
+      [0, 0],
+      [9, 9],
+    ],
+    { k: 2, presetKey: "test" }
   );
+  const assigned = assignKmeansStep(initialized, points);
+  const recomputed = recomputeKmeansStep(assigned, points);
+
+  expect(recomputed.history).toHaveLength(1);
+  expect(recomputed.history[0].iteration).toBe(1);
+  expect(recomputed.history[0].centers).toEqual([
+    [2, 2],
+    [10, 10],
+  ]);
+  expect(recomputed.history[0].deltas[0]).toBeCloseTo(Math.hypot(2, 2), 5);
+  expect(recomputed.history[0].deltas[1]).toBeCloseTo(Math.hypot(1, 1), 5);
+  expect(recomputed.converged).toBe(false);
+
+  const advanced = advanceKmeansIteration(recomputed);
+  const reassigned = assignKmeansStep(advanced, points);
+  const stable = recomputeKmeansStep(reassigned, points);
+
+  expect(stable.converged).toBe(true);
+  expect(stable.history).toHaveLength(2);
+  expect(stable.history[1].deltas).toEqual([0, 0]);
 });
 
 test("assigns revised k=3 boundary points to the nearest of three centers", () => {

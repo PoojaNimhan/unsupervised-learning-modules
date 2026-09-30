@@ -4,7 +4,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import BaseScatterPlot from "./internal/BaseScatterPlot.vue";
 import { moduleContent } from "@/lib/content.js";
 import { loadDataset } from "@/lib/datasets.js";
-import { formatDecimal } from "@/lib/formatters.js";
+import { formatNumber, formatPoint } from "@/lib/formatters.js";
 import { advanceKmeansIteration, assignKmeansStep, initializeKmeansStepper, recomputeKmeansStep } from "@/lib/kmeans-stepper.js";
 import { buildAssignmentConnections, buildCenterTeachingCards } from "@/lib/kmeans-teaching.js";
 import { trackTelemetryEvent } from "@/lib/telemetry.js";
@@ -140,10 +140,6 @@ function trackToggle(controlId, value) {
 function clusterColor(index) {
   return ["#2563eb", "#f97316", "#7c3aed"][index] ?? "#2563eb";
 }
-
-function formatNumber(value) {
-  return formatDecimal(value).replace(/,0$/, "");
-}
 </script>
 
 <template>
@@ -160,7 +156,7 @@ function formatNumber(value) {
         <button :disabled="stepperState && !hasPendingConfigurationChange" @click="initialize">{{ content.structuring.stepper.controls.initialize_label }}</button>
         <button :disabled="!stepperState || stepperState.stage !== 'initialized'" @click="assign">{{ content.structuring.stepper.controls.assign_label }}</button>
         <button :disabled="!stepperState || stepperState.stage !== 'assigned'" @click="recompute">{{ content.structuring.stepper.controls.recompute_label }}</button>
-        <button :disabled="!stepperState || stepperState.stage !== 'recomputed' || stepperState.converged" @click="nextIteration">{{ content.structuring.stepper.controls.next_iteration_label }}</button>
+        <button :disabled="!stepperState || stepperState.stage !== 'recomputed'" @click="nextIteration">{{ content.structuring.stepper.controls.next_iteration_label }}</button>
         <button @click="resetStepper">{{ content.structuring.stepper.controls.reset_label }}</button>
       </div>
       <p class="status">{{ statusMessage }}</p>
@@ -211,8 +207,8 @@ function formatNumber(value) {
         <div class="center-grid">
           <div v-for="card in teachingCards.length ? teachingCards : buildCenterTeachingCards(activeDataset, activePreset.centers, null)" :key="`card-${card.centerIndex}`" class="mini-card">
             <strong>C{{ card.centerIndex + 1 }}</strong>
-            <span>{{ content.structuring.stepper.teaching_panel.current_center_label }}: ({{ formatNumber(card.center[0]) }}, {{ formatNumber(card.center[1]) }})</span>
-            <span v-if="card.previousCenter">{{ content.structuring.stepper.teaching_panel.previous_center_label }}: ({{ formatNumber(card.previousCenter[0]) }}, {{ formatNumber(card.previousCenter[1]) }})</span>
+            <span>{{ content.structuring.stepper.teaching_panel.current_center_label }}: {{ formatPoint(card.center[0], card.center[1]) }}</span>
+            <span v-if="card.previousCenter">{{ content.structuring.stepper.teaching_panel.previous_center_label }}: {{ formatPoint(card.previousCenter[0], card.previousCenter[1]) }}</span>
             <span v-if="card.visitorIds.length">{{ content.structuring.stepper.teaching_panel.assigned_visitors_label }}: {{ card.visitorIds.join(', ') }}</span>
             <span v-else>{{ content.structuring.stepper.teaching_panel.assigned_visitors_label }}: -</span>
             <template v-if="isRecomputedStage && card.xFormula && card.yFormula">
@@ -224,6 +220,30 @@ function formatNumber(value) {
           </div>
         </div>
       </div>
+    </div>
+
+    <div v-if="stepperState?.history?.length" class="card history-card">
+      <h4>{{ content.structuring.stepper.summaries.history_heading }}</h4>
+      <p class="status">{{ content.structuring.stepper.summaries.history_intro }}</p>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>{{ content.structuring.stepper.summaries.history_iteration_label }}</th>
+            <th v-for="(center, index) in stepperState.currentCenters" :key="`history-head-${index}`">
+              {{ content.structuring.stepper.summaries.history_center_label_template.replace('{index}', String(index + 1)) }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="entry in stepperState.history" :key="`history-row-${entry.iteration}`">
+            <td>{{ entry.iteration }}</td>
+            <td v-for="(delta, index) in entry.deltas" :key="`history-delta-${entry.iteration}-${index}`">
+              {{ formatNumber(delta) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-if="stepperState.converged" class="status">{{ content.structuring.stepper.summaries.history_stable_note }}</p>
     </div>
   </section>
 </template>
@@ -248,4 +268,6 @@ function formatNumber(value) {
   letter-spacing: 0.01em;
 }
 .stats-grid span, .mini-card span { display: block; margin-top: 0.35rem; }
+.history-table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+.history-table th, .history-table td { border: 1px solid #d6e2ed; padding: 0.6rem 0.75rem; text-align: left; background: #ffffff; }
 </style>

@@ -4,6 +4,7 @@ import { computed, ref } from "vue";
 import BaseScatterPlot from "./internal/BaseScatterPlot.vue";
 import { moduleContent } from "@/lib/content.js";
 import { loadDataset } from "@/lib/datasets.js";
+import { formatPoint } from "@/lib/formatters.js";
 import { buildFuzzyPlotPoints } from "@/lib/module4-fuzzy.js";
 
 const content = moduleContent("module4");
@@ -107,7 +108,7 @@ function barStyle(value, color) {
         }}
       </p>
       <p class="small">
-        Smartwatch-Position: ({{ hybridAd.tech_score }}, {{ hybridAd.style_score }})
+        Smartwatch-Position: {{ formatPoint(hybridAd.tech_score, hybridAd.style_score) }}
       </p>
     </div>
   </section>

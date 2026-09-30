@@ -2,6 +2,14 @@ export function formatDecimal(value, digits = 1) {
   return Number(value).toFixed(digits).replace(".", ",");
 }
 
+export function formatNumber(value) {
+  return formatDecimal(value).replace(/,0$/, "");
+}
+
+export function formatPoint(x, y) {
+  return `(${formatNumber(x)}|${formatNumber(y)})`;
+}
+
 export function formatPriceEur(value) {
   return `${Number(value).toLocaleString("de-DE")} €`;
 }

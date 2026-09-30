@@ -83,8 +83,8 @@ test("calculates the expected distance table in the exercise", async () => {
     .trigger("click");
 
   expect(wrapper.text()).toContain("Distanztabelle");
-  expect(wrapper.text()).toContain("P1 = (3, 4)");
-  expect(wrapper.text()).toContain("P2 = (0, 0)");
+  expect(wrapper.text()).toContain("P1 = (3|4)");
+  expect(wrapper.text()).toContain("P2 = (0|0)");
   expect(wrapper.text()).toContain("5");
   expect(wrapper.text()).toContain("0");
 });

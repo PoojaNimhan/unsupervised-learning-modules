@@ -309,11 +309,11 @@ exercises:
     Du öffnest das Dashboard und erkennst drei unterschiedliche Muster in den
     Daten – jedes steht für eine andere Art von Nutzerverhalten:
   scenario_patterns:
-    - label: "Hardcore-Gamer: (1, 1), (1,2, 1,1), (1,5, 1,2)"
+    - label: "Hardcore-Gamer: (1|1), (1,2|1,1), (1,5|1,2)"
       note: "Eine eng verbundene Gruppe, die zusammenbleibt."
-    - label: "Viraler „Grüner Smoothie“-Trend: (5, 5), (6, 5), (7, 5), (8, 5), (9, 5)"
+    - label: "Viraler „Grüner Smoothie“-Trend: (5|5), (6|5), (7|5), (8|5), (9|5)"
       note: "Eine lange Kette von Nutzern unterschiedlicher Art, die durch ein gemeinsames virales Interesse lose miteinander verbunden sind."
-    - label: "Zufälliges Bot-Konto: (10, 10)"
+    - label: "Zufälliges Bot-Konto: (10|10)"
       note: "Ein seltsamer Ausreißer, der keinem bekannten Muster zugeordnet werden kann."
   scenario_followup: "Nun benötigt der Ad-Bot Ihre Hilfe, um herauszufinden, welches Regelwerk zu jedem Szenario passt."
   steps:
@@ -338,7 +338,7 @@ exercises:
   knowledge_check_heading: "Wissenscheck:"
   knowledge_check_intro: "Entscheide anhand der folgenden Szenarien, welches Vorgehen geeignet ist und wofür es eingesetzt werden kann."
   knowledge_check_items:
-    - scenario: "Eine Smart-Home-Gruppe umfasst Glühbirnen (2,2), Steckdosen (2.1, 2) und Hubs (2, 2.2)."
+    - scenario: "Eine Smart-Home-Gruppe umfasst Glühbirnen (2|2), Steckdosen (2,1|2) und Hubs (2|2,2)."
       answer: "Regelwerk: Zentrumsbasiert (kreisförmig)."
     - scenario: "Ein Musikentdeckungs-Trend, bei dem Hörer von Künstler A zu Künstler B führen, der wiederum zu Künstler C in einer langen Kette führt."
       answer: "Regelwerk: Dichtebasiert (Kette)."

@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 
 import { moduleContent } from "@/lib/content.js";
-import { formatDecimal } from "@/lib/formatters.js";
+import { formatNumber, formatPoint } from "@/lib/formatters.js";
 import { buildDistanceMatrix } from "@/lib/kmeans-distance.js";
 import { trackTelemetryEvent } from "@/lib/telemetry.js";
 
@@ -143,9 +143,6 @@ function onCoordinateInput() {
   });
 }
 
-function formatNumber(value) {
-  return formatDecimal(value).replace(/,0$/, "");
-}
 </script>
 
 <template>
@@ -236,7 +233,7 @@ function formatNumber(value) {
           <tbody>
             <tr v-for="(row, rowIndex) in results" :key="`row-${rowIndex}`">
               <td>
-                {{ pointLabels[rowIndex] }} = ({{ formatNumber(row.point[0]) }}, {{ formatNumber(row.point[1]) }})
+                {{ pointLabels[rowIndex] }} = {{ formatPoint(row.point[0], row.point[1]) }}
               </td>
               <td v-for="item in row.distances" :key="`distance-${rowIndex}-${item.centerIndex}`">
                 {{ formatNumber(item.distance) }}

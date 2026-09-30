@@ -40,18 +40,13 @@ async function main() {
 
   const modules = await loadAllGermanModules();
 
-  await writeFile(
-    resolve(EXPORT_CHAPTER_ROOT, "site.txt"),
-    [
-      "title: Konzepte des unüberwachten Lernens",
-      "----",
-      "menu: Clusterbildung",
-      "----",
-      "uuid: " + makeStableUuid("chapter:clusterbildung-verstehen"),
-      "",
-    ].join("\n"),
-    "utf8"
-  );
+  const chapterFileText = infSchuleFile({
+    title: "Konzepte des unüberwachten Lernens",
+    menu: "Clusterbildung",
+    html: renderStartPage(modules.start),
+    uuid: makeStableUuid("chapter:clusterbildung-verstehen"),
+  });
+  await writeFile(resolve(EXPORT_CHAPTER_ROOT, "inhalt.txt"), chapterFileText, "utf8");
   await writeFile(resolve(EXPORT_CHAPTER_ROOT, "_stile.css"), CHAPTER_STYLES, "utf8");
 
   await Promise.all(

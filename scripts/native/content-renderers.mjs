@@ -474,9 +474,21 @@ export function renderModule3Page(content) {
     content.concept.key_formula_intro
       ? paragraph(content.concept.key_formula_intro)
       : "",
-    renderSummationExpansionFormula(),
+    content.concept.key_formula_plain_heading
+      ? `<h5>${escapeHtml(content.concept.key_formula_plain_heading)}</h5>`
+      : "",
+    content.concept.key_formula_plain_body
+      ? paragraph(content.concept.key_formula_plain_body)
+      : "",
+    content.concept.key_formula_plain_example
+      ? paragraph(content.concept.key_formula_plain_example)
+      : "",
     renderMeanFormula(),
     paragraph(content.concept.key_formula_note),
+    content.concept.key_formula_expanded_label
+      ? paragraph(content.concept.key_formula_expanded_label)
+      : "",
+    renderSummationExpansionFormula(),
     `<h5>${escapeHtml(content.concept.symbol_heading)}</h5>`,
     rawBulletList(content.concept.symbol_items),
     `<h4>${escapeHtml(content.concept.one_dimensional_example.heading)}</h4>`,

@@ -198,13 +198,13 @@ exercises:
       - title: "Erster verlorener Snack: Fruchtjoghurt"
         snack_name: fruit_yogurt
         details:
-          - "Zucker: 15,0 g/100g | Fett: 3,5 g/100g | Punkt: (15,0 ; 3,5)"
+          - "Zucker: 15,0 g/100g | Fett: 3,5 g/100g | Punkt: (15,0|3,5)"
           - "Markiere den Punkt auf deiner Karte."
           - "Die Position zeigt, dass dieser Snack zu keiner Gruppe eindeutig gehört. Er liegt zwischen zwei Gruppen."
       - title: "Zweiter verlorener Snack: Fitness-Riegel"
         snack_name: fitness_bar
         details:
-          - "Zucker: 5,0 g/100g | Fett: 15,0 g/100g | Punkt: (5,0 ; 15,0)"
+          - "Zucker: 5,0 g/100g | Fett: 15,0 g/100g | Punkt: (5,0|15,0)"
           - "Markiere den Punkt."
           - "Auch dieser Snack liegt zwischen zwei Gruppen."
     clustering_note: >

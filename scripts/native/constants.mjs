@@ -28,7 +28,7 @@ export const EXPORT_FEATURES_CONFIG = resolve(
   "config",
   "features.json"
 );
-export const DIST_INDEX = resolve("dist/index.js");
+export const DIST_INDEX = resolve("dist-infschule/index.js");
 
 export const MODULE_FOLDER_ORDER = [
   ["start", "10_start"],

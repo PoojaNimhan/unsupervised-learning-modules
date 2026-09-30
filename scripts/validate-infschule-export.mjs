@@ -1,7 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-import { EXPORT_CHAPTER_ROOT, EXPORT_FEATURES_CONFIG, MODULE_FOLDER_ORDER } from "./native/constants.mjs";
+import {
+  DIST_INDEX,
+  EXPORT_CHAPTER_ROOT,
+  EXPORT_FEATURES_CONFIG,
+  MODULE_FOLDER_ORDER,
+} from "./native/constants.mjs";
 
 async function assertFileContains(filePath, needle) {
   const contents = await readFile(filePath, "utf8");
@@ -21,20 +26,34 @@ async function main() {
     throw new Error(`Missing feature registration for ${manifest.featureName}`);
   }
 
+  const chapterRootPath = resolve(EXPORT_CHAPTER_ROOT, "inhalt.txt");
+  const chapterRootContents = await readFile(chapterRootPath, "utf8");
+  for (const needle of ["Title:", "Menutitle:", "Text:", "Uuid:"]) {
+    if (!chapterRootContents.includes(needle)) {
+      throw new Error(`Missing ${needle} in ${chapterRootPath}`);
+    }
+  }
+
   await Promise.all(
     MODULE_FOLDER_ORDER.map(async ([name, folder]) => {
       const filePath = resolve(EXPORT_CHAPTER_ROOT, folder, "inhalt.txt");
       const contents = await readFile(filePath, "utf8");
-      if (!contents.includes("title:")) {
-        throw new Error(`Missing title in ${filePath}`);
+      if (!contents.includes("Title:")) {
+        throw new Error(`Missing Title in ${filePath}`);
       }
-      if (!contents.includes("uuid:")) {
-        throw new Error(`Missing uuid in ${filePath}`);
+      if (!contents.includes("Menutitle:")) {
+        throw new Error(`Missing Menutitle in ${filePath}`);
+      }
+      if (!contents.includes("Text:")) {
+        throw new Error(`Missing Text in ${filePath}`);
+      }
+      if (!contents.includes("Uuid:")) {
+        throw new Error(`Missing Uuid in ${filePath}`);
       }
       const hasCustomElement = manifest.customElements.some((tag) => contents.includes(`<${tag}`));
       if (["module1", "module2", "module3", "module4"].includes(name)) {
-        if (!contents.includes(`features: ${manifest.featureName}`)) {
-          throw new Error(`Missing features attribute in ${filePath}`);
+        if (!contents.includes(`Features: ${manifest.featureName}`)) {
+          throw new Error(`Missing Features attribute in ${filePath}`);
         }
         if (!hasCustomElement) {
           throw new Error(`Expected a custom element in ${filePath}`);
@@ -44,7 +63,7 @@ async function main() {
   );
 
   for (const tag of manifest.customElements) {
-    await assertFileContains(resolve("dist/index.js"), tag);
+    await assertFileContains(DIST_INDEX, tag);
   }
 }
 
